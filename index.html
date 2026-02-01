@@ -20,7 +20,7 @@
         html { scroll-behavior: smooth; }
         body { background-color: var(--bg); color: var(--text-main); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-        /* Custom Cursor - Estilo Apple Moderno */
+        /* Custom Cursor */
         #cursor {
             width: 20px;
             height: 20px;
@@ -33,7 +33,7 @@
             transition: transform 0.2s ease;
         }
 
-        /* Navbar Glassmorphism */
+        /* Navbar */
         nav {
             position: fixed;
             top: 20px;
@@ -57,9 +57,9 @@
         nav a { color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 500; transition: 0.4s; }
         nav a:hover { color: var(--text-main); }
 
-        /* Hero Section */
+        /* Hero */
         .hero {
-            height: 90vh;
+            height: 80vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -80,16 +80,10 @@
 
         .hero p { font-size: clamp(18px, 4vw, 24px); color: var(--text-dim); max-width: 700px; }
 
-        /* Container Bento Grid */
+        /* Bento Grid */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 100px; }
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 
-        .bento-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
-        }
-
-        /* Itens do Grid */
         .bento-item {
             background: var(--card-bg);
             border-radius: 28px;
@@ -101,6 +95,19 @@
         }
 
         .bento-item:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.3); }
+
+        /* Destaque 70K - Fora da caixa (sem fundo de card) */
+        .stats-item {
+            background: transparent;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 30px;
+        }
+        .stats-item:hover { transform: scale(1.05); }
+        .stats-item h2 { font-size: clamp(60px, 8vw, 90px); font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+        .stats-item p { color: var(--text-dim); font-size: 18px; margin-top: 10px; }
 
         .large { grid-column: span 2; }
         .small { grid-column: span 1; }
@@ -117,15 +124,11 @@
             font-weight: 600;
         }
 
-        /* Estilo das Informações (Corrigido) */
-        .card-info {
-            padding: 30px; /* Padding generoso */
-        }
-
+        .card-info { padding: 30px; }
         .card-info h3 { font-size: 22px; margin-bottom: 8px; font-weight: 600; }
         .card-info p { color: var(--text-dim); font-size: 16px; }
 
-        /* Testemunho do Pinécio */
+        /* Testemunho Pinécio */
         .testimonial-card {
             background: linear-gradient(145deg, #1a1a1c, #0d0d0e);
             flex-direction: row;
@@ -145,7 +148,6 @@
         }
 
         .testimonial-card:hover .client-img { filter: grayscale(0%); border-color: #fff; }
-
         .feedback-text { font-size: 24px; font-style: italic; font-weight: 300; line-height: 1.4; }
 
         /* Footer */
@@ -162,7 +164,6 @@
         }
         .cta-btn:hover { background: #d2d2d7; transform: scale(1.05); }
 
-        /* Reveal Animation */
         .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
@@ -170,7 +171,7 @@
             .bento-grid { grid-template-columns: 1fr; }
             .large, .small, .full { grid-column: span 1; }
             .testimonial-card { flex-direction: column; text-align: center; padding: 40px 20px; }
-            #cursor { display: none; } /* Remove cursor no mobile */
+            #cursor { display: none; }
             * { cursor: auto; }
         }
     </style>
@@ -201,11 +202,9 @@
                 </div>
             </div>
 
-            <div class="bento-item small reveal">
-                <div class="card-info" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
-                    <h2 style="font-size: 48px;">+70K</h2>
-                    <p>Views geradas.</p>
-                </div>
+            <div class="bento-item small stats-item reveal">
+                <h2>70K</h2>
+                <p>Inscritos impactados.</p>
             </div>
 
             <div class="bento-item full testimonial-card reveal" id="feedback">
@@ -244,14 +243,12 @@
     </footer>
 
     <script>
-        // Custom Cursor Logic
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', e => {
             cursor.style.left = e.clientX + 'px';
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Scroll Reveal Logic
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
