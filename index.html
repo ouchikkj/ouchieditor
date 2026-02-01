@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ouchi | Editor de Vídeo Premium</title>
+    <title>Ouchi | Editor de Vídeos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -22,11 +22,16 @@
             font-family: 'Inter', -apple-system, sans-serif;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-color: var(--bg);
             color: var(--text);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         /* Navbar Ultra-Glass */
@@ -62,12 +67,13 @@
 
         /* Hero com impacto */
         .hero {
-            height: 100vh;
+            min-height: 90vh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            padding-top: 100px;
         }
 
         .hero h1 {
@@ -78,6 +84,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .hero p {
@@ -105,12 +112,12 @@
             border-radius: 28px;
             padding: 30px;
             border: 1px solid var(--border);
-            transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+            transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
             position: relative;
             overflow: hidden;
         }
 
-        .bento-item:hover { transform: scale(1.01); border-color: rgba(255,255,255,0.2); }
+        .bento-item:hover { transform: translateY(-5px) scale(1.01); border-color: rgba(255,255,255,0.3); box-shadow: 0 20px 40px -20px rgba(0,0,0,0.8); }
 
         .large { grid-column: span 2; height: 450px; }
         .small { grid-column: span 1; }
@@ -125,9 +132,10 @@
             align-items: center;
             justify-content: center;
             color: #333;
+            font-weight: 600;
         }
 
-        /* Seção Pinécio */
+        /* Seção Pinécio com Efeito P&B */
         .testimonial-card {
             background: linear-gradient(145deg, #1a1a1c, #0d0d0e);
             display: flex;
@@ -137,31 +145,43 @@
         }
 
         .client-img {
-            width: 100px;
-            height: 100px;
+            width: 120px;
+            height: 120px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--accent);
+            border: 3px solid var(--border);
+            /* Efeito Apple Monochrome */
+            filter: grayscale(100%);
+            transition: all 0.5s ease;
+        }
+
+        /* Ao passar o mouse no card, a foto ganha cor */
+        .testimonial-card:hover .client-img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+            border-color: var(--accent);
         }
 
         .feedback-text {
-            font-size: 24px;
+            font-size: clamp(18px, 2.5vw, 24px);
             font-style: italic;
             font-weight: 300;
             color: #fff;
+            line-height: 1.4;
         }
 
-        .client-info h4 { font-size: 18px; margin-bottom: 4px; }
-        .client-info span { color: var(--text-dim); font-size: 14px; }
+        .client-info h4 { font-size: 20px; margin-bottom: 4px; font-weight: 600;}
+        .client-info span { color: var(--text-dim); font-size: 15px; }
 
         /* Rodapé */
         footer {
-            padding: 100px 20px;
+            padding: 150px 20px;
             text-align: center;
-            background: #000;
+            background: linear-gradient(to top, #000, transparent);
         }
 
         .social-btn {
+            display: inline-block;
             padding: 15px 40px;
             background: #fff;
             color: #000;
@@ -172,7 +192,7 @@
             transition: 0.3s;
         }
 
-        .social-btn:hover { background: #d2d2d7; }
+        .social-btn:hover { background: #d2d2d7; transform: scale(1.05); }
 
         /* Animações */
         .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
@@ -180,8 +200,9 @@
 
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
-            .large, .small, .full { grid-column: span 1; height: auto; }
-            .testimonial-card { flex-direction: column; text-align: center; padding: 40px 20px; }
+            .large, .small, .full { grid-column: span 1; height: auto; min-height: 300px; }
+            .testimonial-card { flex-direction: column; text-align: center; padding: 40px 30px; gap: 20px; }
+            .feedback-text { font-size: 18px; }
         }
     </style>
 </head>
@@ -202,8 +223,8 @@
         <div class="bento-grid">
             
             <div class="bento-item large reveal" id="work">
-                <div class="video-placeholder">Seu Melhor Vídeo (16:9)</div>
-                <div style="margin-top: 20px;">
+                <div class="video-placeholder">[SEU VÍDEO PRINCIPAL 16:9]</div>
+                <div style="margin-top: 25px;">
                     <h3>Cinema Experience</h3>
                     <p style="color: var(--text-dim);">Edição narrativa e sound design imersivo.</p>
                 </div>
@@ -211,52 +232,57 @@
 
             <div class="bento-item small reveal">
                 <div style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
-                    <h2 style="font-size: 40px;">+10M</h2>
-                    <p style="color: var(--text-dim);">Visualizações geradas em projetos de clientes.</p>
+                    <h2 style="font-size: clamp(40px, 5vw, 60px); line-height: 1;">+10M</h2>
+                    <p style="color: var(--text-dim); margin-top: 10px;">Visualizações geradas em projetos de clientes.</p>
                 </div>
             </div>
 
             <div class="bento-item full testimonial-card reveal" id="feedback">
-                <img src="http://googleusercontent.com/image_collection/image_retrieval/8663144058336287033_0" alt="Pinécio" class="client-img">
+                <img src="pinecio.jpg" alt="Feedback do Pinécio" class="client-img">
                 <div>
                     <p class="feedback-text">“Trabalho incrível, o cara te atende e está disposto 100% (quando ele tem disponibilidade) entrega tudo no prazo.. absurdo!“</p>
-                    <div class="client-info" style="margin-top: 20px;">
+                    <div class="client-info" style="margin-top: 25px;">
                         <h4>Pinécio</h4>
                         <span>YouTuber • 44k Inscritos</span>
                     </div>
                 </div>
             </div>
 
-            <div class="bento-item small reveal">
-                <div class="video-placeholder">Social Medias</div>
+            <div class="bento-item small reveal" style="min-height: 350px;">
+                <div class="video-placeholder">[REELS/TIKTOK]</div>
+                <h3 style="margin-top: 20px;">Social Media Dinâmico</h3>
             </div>
 
             <div class="bento-item large reveal">
-                <div class="video-placeholder">Documentary Project</div>
+                 <div class="video-placeholder">[VÍDEO DOCUMENTAL]</div>
+                 <h3 style="margin-top: 20px;">Storytelling Documental</h3>
             </div>
 
         </div>
     </div>
 
     <footer>
-        <h2 class="reveal" style="font-size: 40px; margin-bottom: 40px;">Pronto para o próximo nível?</h2>
-        <a href="https://x.com/ouchikk" target="_blank" class="social-btn">Conectar via X</a>
-        <p style="margin-top: 60px; color: #444; font-size: 13px;">© 2024 OUCHI | EDITING STUDIO</p>
+        <h2 class="reveal" style="font-size: clamp(30px, 5vw, 40px); margin-bottom: 40px;">Pronto para elevar seu conteúdo?</h2>
+        <a href="https://x.com/ouchikk" target="_blank" class="social-btn reveal">Conectar via X</a>
+        <p class="reveal" style="margin-top: 80px; color: #444; font-size: 13px; letter-spacing: 1px;">© 2024 OUCHI | EDITING STUDIO</p>
     </footer>
 
     <script>
+        // Script de animação ao rolar a página
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) {
+                var elementVisible = 150;
+                if (elementTop < windowHeight - elementVisible) {
                     reveals[i].classList.add("active");
                 }
             }
         }
         window.addEventListener("scroll", reveal);
-        reveal();
+        // Ativa a animação inicial
+        setTimeout(reveal, 100); 
     </script>
 </body>
 </html>
