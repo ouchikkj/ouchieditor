@@ -8,101 +8,118 @@
     <style>
         :root {
             --bg: #050505;
-            --card-bg: rgba(20, 20, 21, 0.9);
+            --card-bg: rgba(22, 22, 23, 0.6);
             --text-main: #ffffff;
             --text-dim: #86868b;
-            --border: rgba(255, 255, 255, 0.1);
+            --border: rgba(255, 255, 255, 0.08);
+            --ease-apple: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; }
         body { background: var(--bg); color: var(--text-main); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* INTRO RÁPIDA E IMPACTANTE */
+        /* INTRO RÁPIDA (TURBINADA) */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center;
         }
 
         #intro-screen h1 {
-            font-size: 60px; font-weight: 800; letter-spacing: 15px;
-            animation: glitch 1.2s forwards ease-in-out;
+            font-size: 50px; font-weight: 800; letter-spacing: 20px;
+            animation: glitch-intro 1.1s var(--ease-out-expo) forwards;
         }
 
-        @keyframes glitch {
-            0% { opacity: 0; transform: scale(0.9); filter: blur(10px); }
-            20% { opacity: 1; filter: blur(0); }
-            40% { transform: skew(10deg); opacity: 0.8; }
-            50% { transform: skew(-10deg); }
-            80% { opacity: 1; transform: scale(1.05); }
-            100% { opacity: 0; transform: scale(1.2); }
+        @keyframes glitch-intro {
+            0% { opacity: 0; transform: scale(0.85); letter-spacing: 30px; filter: blur(10px); }
+            30% { opacity: 1; filter: blur(0); letter-spacing: 15px; }
+            85% { opacity: 1; transform: scale(1.02); }
+            100% { opacity: 0; transform: scale(1.1); filter: blur(5px); }
         }
 
-        /* CURSOR */
+        /* CURSOR FLUIDO (MAGNETIC EFFECT) */
         #cursor {
-            width: 15px; height: 15px; background: white; border-radius: 50%;
+            width: 12px; height: 12px; background: white; border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 21000;
-            mix-blend-mode: difference; transition: transform 0.1s ease;
+            mix-blend-mode: difference; transition: width 0.3s var(--ease-apple), height 0.3s var(--ease-apple), transform 0.15s ease-out;
         }
 
-        /* NAVBAR */
+        .cursor-hover { transform: scale(4); background: rgba(255,255,255,0.2); }
+
+        /* NAVBAR (MINIMAL GLASS) */
         nav {
-            position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 450px; height: 40px;
-            background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(20px);
+            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
+            width: fit-content; padding: 0 30px; height: 44px;
+            background: rgba(15, 15, 15, 0.4); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
             border: 1px solid var(--border); border-radius: 100px;
-            z-index: 1000; display: flex; justify-content: space-around; align-items: center;
+            z-index: 1000; display: flex; gap: 30px; align-items: center;
         }
-        nav a { color: var(--text-dim); text-decoration: none; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
-        nav a:hover { color: #fff; }
+        nav a { color: var(--text-dim); text-decoration: none; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.3s var(--ease-apple); }
+        nav a:hover { color: #fff; transform: translateY(-1px); }
 
-        /* HERO */
-        .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: clamp(60px, 12vw, 130px); font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; }
+        /* HERO SECTION */
+        .hero { height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { 
+            font-size: clamp(60px, 15vw, 150px); font-weight: 800; letter-spacing: -0.06em; line-height: 0.85; 
+            background: linear-gradient(180deg, #fff 40%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
 
-        /* BENTO GRID */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 100px; }
-        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+        /* BENTO GRID (ANIMADO) */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 25px 120px; }
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 
-        .bento-item { background: var(--card-bg); border-radius: 28px; border: 1px solid var(--border); overflow: hidden; transition: 0.5s ease; }
-        .bento-item:hover { border-color: #fff; }
+        .bento-item { 
+            background: var(--card-bg); border-radius: 32px; border: 1px solid var(--border); overflow: hidden; 
+            transition: all 0.6s var(--ease-out-expo); position: relative;
+        }
+        .bento-item:hover { 
+            transform: translateY(-10px) scale(1.02); 
+            border-color: rgba(255,255,255,0.25);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+        }
 
         .large { grid-column: span 2; }
         .small { grid-column: span 1; }
         .full { grid-column: span 3; }
 
-        .video-placeholder { width: 100%; aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center; color: #222; font-weight: bold; }
-        .card-info { padding: 30px; }
-        .card-info h3 { font-size: 22px; margin-bottom: 5px; }
-        .card-info p { color: var(--text-dim); font-size: 14px; }
+        .video-thumb { width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        .video-thumb img, .video-thumb div { transition: transform 0.8s var(--ease-out-expo); }
+        .bento-item:hover .video-thumb div { transform: scale(1.1); }
 
-        /* STATS 70K */
-        .stats-item { background: transparent; border: none; padding: 30px; }
-        .stats-item h2 { font-size: 90px; font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+        .card-info { padding: 35px; }
+        .card-info h3 { font-size: 24px; font-weight: 600; letter-spacing: -0.02em; }
+        .card-info p { color: var(--text-dim); font-size: 15px; margin-top: 5px; }
 
-        /* FEEDBACK PINÉCIO */
-        .testimonial { padding: 50px; flex-direction: row; align-items: center; gap: 35px; background: linear-gradient(145deg, #0f0f10, #050505); }
-        .client-img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; filter: grayscale(1); border: 1px solid var(--border); transition: 0.5s; }
-        .testimonial:hover .client-img { filter: grayscale(0); }
-        .feedback-text { font-size: 20px; font-style: italic; font-weight: 300; line-height: 1.5; color: #d2d2d7; }
+        /* NUMEROS (70K) */
+        .stats-item { background: transparent; border: none; }
+        .stats-item h2 { font-size: clamp(80px, 10vw, 110px); font-weight: 800; letter-spacing: -0.08em; color: #fff; line-height: 0.9; }
 
-        /* SOBRE MIM (ANTES DO CONTATO) */
-        .about-section { padding: 50px; background: #0a0a0b; border: 1px solid var(--border); }
-        .about-section h2 { font-size: 28px; margin-bottom: 15px; }
-        .about-section p { font-size: 18px; color: #d2d2d7; line-height: 1.6; font-weight: 300; }
+        /* FEEDBACK FLUIDO */
+        .testimonial { padding: 60px; display: flex; align-items: center; gap: 40px; background: linear-gradient(145deg, #121213, #050505); }
+        .client-img { width: 95px; height: 95px; border-radius: 50%; filter: grayscale(1); border: 2px solid var(--border); transition: 0.8s var(--ease-out-expo); }
+        .testimonial:hover .client-img { filter: grayscale(0); transform: rotate(-5deg) scale(1.1); border-color: #fff; }
 
-        /* FOOTER */
-        footer { padding: 100px 20px; text-align: center; }
-        .cta { font-size: 18px; font-weight: 600; color: #000; background: #fff; padding: 18px 45px; border-radius: 100px; text-decoration: none; transition: 0.3s; display: inline-block; }
-        .cta:hover { transform: scale(1.05); }
+        /* SOBRE MIM (ESTÉTICO) */
+        .about-section { padding: 60px; background: #0a0a0b; border: 1px solid var(--border); }
+        .about-section h2 { font-size: 32px; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.04em; }
+        .about-section p { font-size: 19px; color: #d2d2d7; line-height: 1.7; font-weight: 300; max-width: 850px; }
 
-        /* REVEAL */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
+        /* FOOTER CTA */
+        footer { padding: 150px 20px; text-align: center; }
+        .cta { 
+            font-size: 18px; font-weight: 700; color: #000; background: #fff; padding: 22px 55px; border-radius: 100px; 
+            text-decoration: none; transition: 0.5s var(--ease-out-expo); display: inline-block;
+        }
+        .cta:hover { transform: scale(1.1) rotate(1deg); background: #eee; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
+
+        /* REVEAL (FLUIDO) */
+        .reveal { opacity: 0; transform: translateY(40px) scale(0.98); transition: all 1.2s var(--ease-out-expo); }
+        .reveal.active { opacity: 1; transform: translateY(0) scale(1); }
 
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
             .large, .small, .full { grid-column: span 1; }
-            .testimonial { flex-direction: column; text-align: center; }
+            .testimonial { flex-direction: column; text-align: center; padding: 40px 25px; }
             #cursor { display: none; } * { cursor: auto; }
         }
     </style>
@@ -113,50 +130,51 @@
     <div id="cursor"></div>
 
     <nav>
-        <a href="#work">Projetos</a>
-        <a href="#feedback">Feedback</a>
-        <a href="#about">Sobre</a>
-        <a href="https://x.com/ouchikk" target="_blank">Contato</a>
+        <a href="#work" class="nav-link">Work</a>
+        <a href="#feedback" class="nav-link">Reviews</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="https://x.com/ouchikk" target="_blank" class="nav-link">Contact</a>
     </nav>
 
     <section class="hero">
         <h1 class="reveal">Ouchi.</h1>
-        <p class="reveal" style="color:var(--text-dim); margin-top:10px;">High-end video editing studio.</p>
+        <p class="reveal" style="color:var(--text-dim); margin-top:15px; letter-spacing: 2px; font-weight: 300; font-size: 13px; text-transform: uppercase;">Editing High-Performance content</p>
     </section>
 
     <div class="container">
         <div class="bento-grid">
             
             <div class="bento-item large reveal" id="work">
-                <div class="video-placeholder">[PROJETO 01]</div>
-                <div class="card-info"><h3>Storytelling</h3><p>Edição narrativa avançada.</p></div>
+                <div class="video-thumb"><div style="color:#222; font-size: 12px;">[PLAYREEL]</div></div>
+                <div class="card-info"><h3>Storytelling Visual</h3><p>Transformando vídeos em experiências cinemáticas.</p></div>
             </div>
 
-            <div class="bento-item small stats-item reveal">
+            <div class="bento-item small stats-item reveal" style="display:flex; flex-direction:column; justify-content:center; padding: 0 20px;">
+                <p style="color:var(--text-dim); text-transform:uppercase; font-size:11px; letter-spacing:1px; margin-bottom:10px;">Reach</p>
                 <h2>70K</h2>
-                <p style="color:var(--text-dim)">Inscritos impactados.</p>
+                <p style="color:var(--text-dim); margin-top:5px;">Followers Impacted</p>
             </div>
 
             <div class="bento-item full testimonial reveal" id="feedback">
                 <img src="pinecio.jpg" alt="Pinécio" class="client-img">
                 <div>
                     <p class="feedback-text">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
-                    <p style="margin-top:15px; font-size:14px;"><strong>Pinécio</strong> • YouTuber (44k)</p>
+                    <p style="margin-top:20px; font-size:14px; opacity:0.6; letter-spacing:1px;">PINÉCIO • YOUTUBER</p>
                 </div>
             </div>
 
             <div class="bento-item small reveal">
-                <div class="video-placeholder">[REELS]</div>
-                <div class="card-info"><h3>Retenção</h3></div>
+                <div class="video-thumb"><div style="color:#222; font-size: 12px;">[REELS]</div></div>
+                <div class="card-info"><h3>Social Content</h3></div>
             </div>
 
             <div class="bento-item large reveal">
-                <div class="video-placeholder">[COMMERCIAL]</div>
-                <div class="card-info"><h3>Luxury Style</h3></div>
+                <div class="video-thumb"><div style="color:#222; font-size: 12px;">[ADS]</div></div>
+                <div class="card-info"><h3>Brand Films</h3></div>
             </div>
 
             <div class="bento-item full about-section reveal" id="about">
-                <h2>Sobre Mim</h2>
+                <h2 style="color: #fff">A Jornada.</h2>
                 <p>
                     Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual! 
                     <br><br>
@@ -168,8 +186,8 @@
     </div>
 
     <footer>
-        <h2 class="reveal" style="margin-bottom: 40px; font-size: 32px;">Vamos elevar seu conteúdo?</h2>
-        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal">Mandar Mensagem</a>
+        <h2 class="reveal" style="margin-bottom: 50px; font-size: clamp(32px, 5vw, 48px); letter-spacing: -0.04em;">Ready for the next level?</h2>
+        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal">Get in Touch</a>
     </footer>
 
     <script>
@@ -177,30 +195,52 @@
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const intro = document.getElementById('intro-screen');
-                intro.style.transition = "opacity 0.6s ease";
+                intro.style.transition = "opacity 0.8s var(--ease-apple)";
                 intro.style.opacity = '0';
-                setTimeout(() => intro.style.visibility = 'hidden', 600);
+                setTimeout(() => intro.style.visibility = 'hidden', 800);
             }, 1200); 
         });
 
-        // Cursor
+        // Smart Cursor
         const cursor = document.getElementById('cursor');
+        let curX = 0, curY = 0, mouseX = 0, mouseY = 0;
+
         document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
         });
 
-        // Reveal
+        // Suavização do cursor (Lerp)
+        function animateCursor() {
+            curX += (mouseX - curX) * 0.15;
+            curY += (mouseY - curY) * 0.15;
+            cursor.style.left = curX + 'px';
+            cursor.style.top = curY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Efeito de hover no cursor
+        document.querySelectorAll('a, .bento-item').forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('cursor-hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
+        });
+
+        // Reveal dinâmico (com atraso progressivo)
         function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 80) reveals[i].classList.add("active");
-            }
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach((el, index) => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                if (elementTop < windowHeight - 50) {
+                    setTimeout(() => {
+                        el.classList.add("active");
+                    }, index * 50); // Delay sutil para efeito cascata
+                }
+            });
         }
         window.addEventListener("scroll", reveal);
-        setTimeout(reveal, 1800);
+        setTimeout(reveal, 1600);
     </script>
 </body>
 </html>
