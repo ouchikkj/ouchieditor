@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ouchi | Editor de Vídeo</title>
+    <title>Ouchi | Editor de Vídeo Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,15 +11,77 @@
             --card-bg: #161617;
             --text-main: #ffffff;
             --text-dim: #a1a1a6;
+            --accent: #ffffff;
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; }
         
-        body { background-color: var(--bg); color: var(--text-main); -webkit-font-smoothing: antialiased; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--text-main); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
 
-        /* Container Principal */
-        .container { max-width: 1200px; margin: 0 auto; padding: 100px 20px; }
+        /* Custom Cursor - Estilo Apple Moderno */
+        #cursor {
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            mix-blend-mode: difference;
+            transition: transform 0.2s ease;
+        }
+
+        /* Navbar Glassmorphism */
+        nav {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 600px;
+            height: 50px;
+            background: rgba(22, 22, 23, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        nav a { color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 500; transition: 0.4s; }
+        nav a:hover { color: var(--text-main); }
+
+        /* Hero Section */
+        .hero {
+            height: 90vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .hero h1 {
+            font-size: clamp(50px, 12vw, 120px);
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            background: linear-gradient(180deg, #fff 0%, #555 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+        }
+
+        .hero p { font-size: clamp(18px, 4vw, 24px); color: var(--text-dim); max-width: 700px; }
+
+        /* Container Bento Grid */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px 100px; }
 
         .bento-grid {
             display: grid;
@@ -27,20 +89,23 @@
             gap: 24px;
         }
 
-        /* Card Estilo Apple */
+        /* Itens do Grid */
         .bento-item {
             background: var(--card-bg);
-            border-radius: 24px;
+            border-radius: 28px;
             border: 1px solid var(--border);
-            overflow: hidden;
             display: flex;
             flex-direction: column;
-            transition: transform 0.4s ease;
+            overflow: hidden;
+            transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
         }
 
-        .bento-item:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
+        .bento-item:hover { transform: translateY(-8px); border-color: rgba(255,255,255,0.3); }
 
-        /* Área do Vídeo/Imagem */
+        .large { grid-column: span 2; }
+        .small { grid-column: span 1; }
+        .full { grid-column: span 3; }
+
         .video-content {
             width: 100%;
             aspect-ratio: 16/9;
@@ -49,95 +114,156 @@
             align-items: center;
             justify-content: center;
             color: #333;
-            font-size: 14px;
             font-weight: 600;
         }
 
-        /* TEXTO CORRIGIDO AQUI */
+        /* Estilo das Informações (Corrigido) */
         .card-info {
-            padding: 24px; /* Espaçamento interno para o texto não grudar */
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
+            padding: 30px; /* Padding generoso */
         }
 
-        .card-info h3 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 6px;
-            color: var(--text-main);
-        }
-
-        .card-info p {
-            font-size: 15px;
-            color: var(--text-dim);
-            font-weight: 400;
-        }
-
-        /* Ajustes de Tamanho */
-        .large { grid-column: span 2; }
-        .small { grid-column: span 1; }
-        .full { grid-column: span 3; }
+        .card-info h3 { font-size: 22px; margin-bottom: 8px; font-weight: 600; }
+        .card-info p { color: var(--text-dim); font-size: 16px; }
 
         /* Testemunho do Pinécio */
-        .testimonial {
-            padding: 50px;
-            display: flex;
-            align-items: center;
-            gap: 30px;
+        .testimonial-card {
             background: linear-gradient(145deg, #1a1a1c, #0d0d0e);
+            flex-direction: row;
+            align-items: center;
+            padding: 60px;
+            gap: 40px;
         }
 
         .client-img {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
             object-fit: cover;
             filter: grayscale(100%);
-            border: 1px solid var(--border);
+            border: 2px solid var(--border);
+            transition: 0.5s;
         }
 
-        /* Responsivo */
+        .testimonial-card:hover .client-img { filter: grayscale(0%); border-color: #fff; }
+
+        .feedback-text { font-size: 24px; font-style: italic; font-weight: 300; line-height: 1.4; }
+
+        /* Footer */
+        footer { padding: 100px 20px; text-align: center; }
+        .cta-btn {
+            display: inline-block;
+            padding: 18px 45px;
+            background: #fff;
+            color: #000;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+        .cta-btn:hover { background: #d2d2d7; transform: scale(1.05); }
+
+        /* Reveal Animation */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease-out; }
+        .reveal.active { opacity: 1; transform: translateY(0); }
+
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
             .large, .small, .full { grid-column: span 1; }
-            .testimonial { flex-direction: column; text-align: center; padding: 30px; }
+            .testimonial-card { flex-direction: column; text-align: center; padding: 40px 20px; }
+            #cursor { display: none; } /* Remove cursor no mobile */
+            * { cursor: auto; }
         }
     </style>
 </head>
 <body>
 
+    <div id="cursor"></div>
+
+    <nav>
+        <a href="#work">Projetos</a>
+        <a href="#feedback">Clientes</a>
+        <a href="https://x.com/ouchikk" target="_blank">Twitter</a>
+    </nav>
+
+    <section class="hero">
+        <h1 class="reveal">Ouchi.</h1>
+        <p class="reveal">Crio narrativas que prendem a atenção. Editor focado em estética minimalista e performance.</p>
+    </section>
+
     <div class="container">
         <div class="bento-grid">
             
-            <div class="bento-item small">
-                <div class="video-content">[REELS/TIKTOK]</div>
+            <div class="bento-item large reveal" id="work">
+                <div class="video-content">[VÍDEO PRINCIPAL]</div>
                 <div class="card-info">
-                    <h3>Social Media Dinâmico</h3>
-                    <p>Motion Graphics • Ritmo</p>
+                    <h3>Documentário & Storytelling</h3>
+                    <p>Narrativa imersiva e color grading avançado.</p>
                 </div>
             </div>
 
-            <div class="bento-item large">
-                <div class="video-content">[VÍDEO DOCUMENTAL]</div>
-                <div class="card-info">
-                    <h3>Storytelling Documental</h3>
-                    <p>Narrativa • Profundidade</p>
+            <div class="bento-item small reveal">
+                <div class="card-info" style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
+                    <h2 style="font-size: 48px;">+70K</h2>
+                    <p>Views geradas.</p>
                 </div>
             </div>
 
-            <div class="bento-item full testimonial">
+            <div class="bento-item full testimonial-card reveal" id="feedback">
                 <img src="pinecio.jpg" alt="Pinécio" class="client-img">
                 <div>
-                    <p style="font-size: 20px; font-style: italic; margin-bottom: 15px;">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
-                    <h4 style="color: #fff;">Pinécio</h4>
-                    <span style="color: var(--text-dim); font-size: 14px;">YouTuber • 44k Inscritos</span>
+                    <p class="feedback-text">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
+                    <div style="margin-top: 20px;">
+                        <strong>Pinécio</strong><br>
+                        <span style="color: var(--text-dim);">YouTuber • 44k Inscritos</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bento-item small reveal">
+                <div class="video-content">[REELS]</div>
+                <div class="card-info">
+                    <h3>Social Media</h3>
+                    <p>Retenção e impacto.</p>
+                </div>
+            </div>
+
+            <div class="bento-item large reveal">
+                <div class="video-content">[COMERCIAL]</div>
+                <div class="card-info">
+                    <h3>Publicidade</h3>
+                    <p>Estética premium para marcas.</p>
                 </div>
             </div>
 
         </div>
     </div>
 
+    <footer>
+        <h2 class="reveal" style="margin-bottom: 40px;">Vamos criar algo grande?</h2>
+        <a href="https://x.com/ouchikk" target="_blank" class="cta-btn reveal">Mandar Mensagem</a>
+    </footer>
+
+    <script>
+        // Custom Cursor Logic
+        const cursor = document.getElementById('cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        // Scroll Reveal Logic
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                if (elementTop < windowHeight - 100) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal();
+    </script>
 </body>
 </html>
