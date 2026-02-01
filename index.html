@@ -84,14 +84,26 @@
 
         /* TESTIMONIAL */
         .testimonial { padding: 50px; display: flex; align-items: center; gap: 30px; background: linear-gradient(145deg, #121213, #050505); }
-        .client-img { width: 80px; height: 80px; border-radius: 50%; filter: grayscale(1); border: 1px solid var(--border); transition: 0.5s; }
+        .client-img { width: 80px; height: 80px; border-radius: 50%; filter: grayscale(1); border: 1px solid var(--border); transition: 0.8s var(--ease-apple); }
         .testimonial:hover .client-img { filter: grayscale(0); transform: scale(1.1); }
 
-        /* SOBRE MIM (COM FOTO) */
+        /* SOBRE MIM (COM EFEITO DE COR) */
         .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; align-items: stretch; background: #0a0a0b; }
         .about-photo { width: 100%; height: 100%; min-height: 400px; overflow: hidden; position: relative; border-right: 1px solid var(--border); }
-        .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8) contrast(1.1); transition: 1.2s var(--ease-out-expo); }
-        .bento-item:hover .about-photo img { transform: scale(1.05); filter: saturate(1); }
+        
+        .about-photo img { 
+            width: 100%; height: 100%; object-fit: cover; 
+            /* Efeito inicial: Preto e Branco */
+            filter: grayscale(100%) contrast(1.1); 
+            transition: filter 0.8s var(--ease-apple), transform 1.2s var(--ease-out-expo); 
+        }
+        
+        /* Efeito de cor ao passar o mouse no card */
+        .bento-item:hover .about-photo img { 
+            filter: grayscale(0%) contrast(1.1) saturate(1.1); 
+            transform: scale(1.03); 
+        }
+
         .about-content { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
         .about-content h2 { font-size: 32px; margin-bottom: 20px; letter-spacing: -0.04em; }
         .about-content p { font-size: 18px; color: #d2d2d7; line-height: 1.7; font-weight: 300; }
@@ -191,8 +203,8 @@
     </div>
 
     <footer>
-        <h2 class="reveal" style="margin-bottom: 40px; font-size: clamp(30px, 5vw, 45px); letter-spacing: -2px;">Ready to create something great?</h2>
-        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal">Get in Touch</a>
+        <h2 class="reveal" style="margin-bottom: 40px; font-size: clamp(30px, 5vw, 45px); letter-spacing: -2px;">Pronto para o próximo nível?</h2>
+        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal">Entre em contato</a>
     </footer>
 
     <script>
