@@ -3,288 +3,141 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ouchi | Editor de Vídeos</title>
+    <title>Ouchi | Editor de Vídeo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #000000;
             --card-bg: #161617;
-            --text: #f5f5f7;
-            --text-dim: #86868b;
-            --accent: #ffffff;
+            --text-main: #ffffff;
+            --text-dim: #a1a1a6;
             --border: rgba(255, 255, 255, 0.1);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', -apple-system, sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { background-color: var(--bg); color: var(--text-main); -webkit-font-smoothing: antialiased; }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background-color: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
-
-        /* Navbar Ultra-Glass */
-        nav {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 90%;
-            max-width: 600px;
-            height: 50px;
-            background: rgba(22, 22, 23, 0.7);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--border);
-            border-radius: 25px;
-            z-index: 1000;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0 20px;
-        }
-
-        nav a {
-            color: var(--text-dim);
-            text-decoration: none;
-            font-size: 13px;
-            font-weight: 500;
-            transition: 0.4s;
-        }
-
-        nav a:hover { color: var(--text); }
-
-        /* Hero com impacto */
-        .hero {
-            min-height: 90vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            padding-top: 100px;
-        }
-
-        .hero h1 {
-            font-size: clamp(50px, 12vw, 120px);
-            font-weight: 800;
-            letter-spacing: -0.05em;
-            background: linear-gradient(180deg, #fff 0%, #555 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-
-        .hero p {
-            font-size: clamp(18px, 4vw, 24px);
-            color: var(--text-dim);
-            max-width: 700px;
-            text-align: center;
-        }
-
-        /* Bento Grid Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px 100px;
-        }
+        /* Container Principal */
+        .container { max-width: 1200px; margin: 0 auto; padding: 100px 20px; }
 
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
         }
 
+        /* Card Estilo Apple */
         .bento-item {
             background: var(--card-bg);
-            border-radius: 28px;
-            padding: 30px;
+            border-radius: 24px;
             border: 1px solid var(--border);
-            transition: all 0.6s cubic-bezier(0.2, 1, 0.3, 1);
-            position: relative;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.4s ease;
         }
 
-        .bento-item:hover { transform: translateY(-5px) scale(1.01); border-color: rgba(255,255,255,0.3); box-shadow: 0 20px 40px -20px rgba(0,0,0,0.8); }
+        .bento-item:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
 
-        .large { grid-column: span 2; height: 450px; }
-        .small { grid-column: span 1; }
-        .full { grid-column: span 3; }
-
-        .video-placeholder {
+        /* Área do Vídeo/Imagem */
+        .video-content {
             width: 100%;
-            height: 100%;
+            aspect-ratio: 16/9;
             background: #0a0a0a;
-            border-radius: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #333;
+            font-size: 14px;
             font-weight: 600;
         }
 
-        /* Seção pinecio com Efeito P&B */
-        .testimonial-card {
-            background: linear-gradient(145deg, #1a1a1c, #0d0d0e);
+        /* TEXTO CORRIGIDO AQUI */
+        .card-info {
+            padding: 24px; /* Espaçamento interno para o texto não grudar */
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+        }
+
+        .card-info h3 {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text-main);
+        }
+
+        .card-info p {
+            font-size: 15px;
+            color: var(--text-dim);
+            font-weight: 400;
+        }
+
+        /* Ajustes de Tamanho */
+        .large { grid-column: span 2; }
+        .small { grid-column: span 1; }
+        .full { grid-column: span 3; }
+
+        /* Testemunho do Pinécio */
+        .testimonial {
+            padding: 50px;
             display: flex;
             align-items: center;
-            gap: 40px;
-            padding: 60px;
+            gap: 30px;
+            background: linear-gradient(145deg, #1a1a1c, #0d0d0e);
         }
 
         .client-img {
-            width: 120px;
-            height: 120px;
+            width: 80px;
+            height: 80px;
             border-radius: 50%;
             object-fit: cover;
-            border: 3px solid var(--border);
-            /* Efeito Apple Monochrome */
             filter: grayscale(100%);
-            transition: all 0.5s ease;
+            border: 1px solid var(--border);
         }
 
-        /* Ao passar o mouse no card, a foto ganha cor */
-        .testimonial-card:hover .client-img {
-            filter: grayscale(0%);
-            transform: scale(1.05);
-            border-color: var(--accent);
-        }
-
-        .feedback-text {
-            font-size: clamp(18px, 2.5vw, 24px);
-            font-style: italic;
-            font-weight: 300;
-            color: #fff;
-            line-height: 1.4;
-        }
-
-        .client-info h4 { font-size: 20px; margin-bottom: 4px; font-weight: 600;}
-        .client-info span { color: var(--text-dim); font-size: 15px; }
-
-        /* Rodapé */
-        footer {
-            padding: 150px 20px;
-            text-align: center;
-            background: linear-gradient(to top, #000, transparent);
-        }
-
-        .social-btn {
-            display: inline-block;
-            padding: 15px 40px;
-            background: #fff;
-            color: #000;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 18px;
-            transition: 0.3s;
-        }
-
-        .social-btn:hover { background: #d2d2d7; transform: scale(1.05); }
-
-        /* Animações */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s ease-out; }
-        .reveal.active { opacity: 1; transform: translateY(0); }
-
+        /* Responsivo */
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
-            .large, .small, .full { grid-column: span 1; height: auto; min-height: 300px; }
-            .testimonial-card { flex-direction: column; text-align: center; padding: 40px 30px; gap: 20px; }
-            .feedback-text { font-size: 18px; }
+            .large, .small, .full { grid-column: span 1; }
+            .testimonial { flex-direction: column; text-align: center; padding: 30px; }
         }
     </style>
 </head>
 <body>
 
-    <nav>
-        <a href="#work">Showcase</a>
-        <a href="#feedback">Feedback</a>
-        <a href="https://x.com/ouchikk" target="_blank">X (Twitter)</a>
-    </nav>
-
-    <section class="hero">
-        <h1 class="reveal">Ouchi.</h1>
-        <p class="reveal">Transformando frames em sensações. Edição de alto nível para criadores que buscam a perfeição visual.</p>
-    </section>
-
     <div class="container">
         <div class="bento-grid">
             
-            <div class="bento-item large reveal" id="work">
-                <div class="video-placeholder">[SEU VÍDEO PRINCIPAL 16:9]</div>
-                <div style="margin-top: 25px;">
-                    <h3>Cinema Experience</h3>
-                    <p style="color: var(--text-dim);">Edição narrativa e sound design imersivo.</p>
+            <div class="bento-item small">
+                <div class="video-content">[REELS/TIKTOK]</div>
+                <div class="card-info">
+                    <h3>Social Media Dinâmico</h3>
+                    <p>Motion Graphics • Ritmo</p>
                 </div>
             </div>
 
-            <div class="bento-item small reveal">
-                <div style="height: 100%; display: flex; flex-direction: column; justify-content: center;">
-                    <h2 style="font-size: clamp(40px, 5vw, 60px); line-height: 1;">68.62K</h2>
-                    <p style="color: var(--text-dim); margin-top: 10px;">Visualizações geradas em projetos de clientes.</p>
+            <div class="bento-item large">
+                <div class="video-content">[VÍDEO DOCUMENTAL]</div>
+                <div class="card-info">
+                    <h3>Storytelling Documental</h3>
+                    <p>Narrativa • Profundidade</p>
                 </div>
             </div>
 
-            <div class="bento-item full testimonial-card reveal" id="feedback">
-                <img src="pinecio.jpg" alt="Feedback do pinecio" class="client-img">
+            <div class="bento-item full testimonial">
+                <img src="pinecio.jpg" alt="Pinécio" class="client-img">
                 <div>
-                    <p class="feedback-text">“Trabalho incrível, o cara te atende e está disposto 100% (quando ele tem disponibilidade) entrega tudo no prazo.. absurdo!“</p>
-                    <div class="client-info" style="margin-top: 25px;">
-                        <h4>pinecio</h4>
-                        <span>YouTuber • 44k Inscritos</span>
-                    </div>
+                    <p style="font-size: 20px; font-style: italic; margin-bottom: 15px;">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
+                    <h4 style="color: #fff;">Pinécio</h4>
+                    <span style="color: var(--text-dim); font-size: 14px;">YouTuber • 44k Inscritos</span>
                 </div>
-            </div>
-
-            <div class="bento-item small reveal" style="min-height: 350px;">
-                <div class="video-placeholder">[REELS/TIKTOK]</div>
-                <h3 style="margin-top: 20px;">Social Media Dinâmico</h3>
-            </div>
-
-            <div class="bento-item large reveal">
-                 <div class="video-placeholder">[VÍDEO DOCUMENTAL]</div>
-                 <h3 style="margin-top: 20px;">Storytelling Documental</h3>
             </div>
 
         </div>
     </div>
 
-    <footer>
-        <h2 class="reveal" style="font-size: clamp(30px, 5vw, 40px); margin-bottom: 40px;">Pronto para elevar seu conteúdo?</h2>
-        <a href="https://x.com/ouchikk" target="_blank" class="social-btn reveal">Conectar via X</a>
-        <p class="reveal" style="margin-top: 80px; color: #444; font-size: 13px; letter-spacing: 1px;">© 2024 OUCHI | EDITING STUDIO</p>
-    </footer>
-
-    <script>
-        // Script de animação ao rolar a página
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().top;
-                var elementVisible = 150;
-                if (elementTop < windowHeight - elementVisible) {
-                    reveals[i].classList.add("active");
-                }
-            }
-        }
-        window.addEventListener("scroll", reveal);
-        // Ativa a animação inicial
-        setTimeout(reveal, 100); 
-    </script>
 </body>
 </html>
-
-
