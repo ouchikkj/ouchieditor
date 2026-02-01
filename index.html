@@ -3,145 +3,160 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ouchi | Editor de Vídeos</title>
+    <title>Ouchi | Editor de Vídeo Premium</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #080808;
-            --card-bg: rgba(22, 22, 23, 0.8);
+            --bg: #050505;
+            --card-bg: rgba(20, 20, 21, 0.9);
             --text-main: #ffffff;
-            --text-dim: #a1a1a6;
-            --border: rgba(255, 255, 255, 0.08);
+            --text-dim: #86868b;
+            --border: rgba(255, 255, 255, 0.1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; }
-        html { scroll-behavior: smooth; }
-        body { background-color: var(--bg); color: var(--text-main); -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text-main); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* TEXTURA DE RUÍDO */
-        body::before {
-            content: "";
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background-image: url('https://grainy-gradients.vercel.app/noise.svg');
-            opacity: 0.2;
-            pointer-events: none;
-            z-index: 10001;
-            filter: contrast(150%);
-        }
-
-        /* ANIMAÇÃO DE ENTRADA IMPACTANTE */
+        /* INTRO RÁPIDA E IMPACTANTE */
         #intro-screen {
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: #000;
-            display: flex; justify-content: center; align-items: center;
-            z-index: 20000;
-            transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1), visibility 1s;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center;
         }
 
         #intro-screen h1 {
-            font-size: 80px;
-            font-weight: 800;
-            letter-spacing: 20px;
-            opacity: 0;
-            transform: scale(0.8);
-            animation: ouchiIntro 2s forwards cubic-bezier(0.16, 1, 0.3, 1);
+            font-size: 60px; font-weight: 800; letter-spacing: 15px;
+            animation: glitch 1.2s forwards ease-in-out;
         }
 
-        @keyframes ouchiIntro {
-            0% { opacity: 0; transform: scale(0.8); letter-spacing: 20px; }
-            50% { opacity: 1; transform: scale(1); letter-spacing: 10px; }
-            100% { opacity: 0; transform: scale(1.1); letter-spacing: 5px; }
+        @keyframes glitch {
+            0% { opacity: 0; transform: scale(0.9); filter: blur(10px); }
+            20% { opacity: 1; filter: blur(0); }
+            40% { transform: skew(10deg); opacity: 0.8; }
+            50% { transform: skew(-10deg); }
+            80% { opacity: 1; transform: scale(1.05); }
+            100% { opacity: 0; transform: scale(1.2); }
         }
 
         /* CURSOR */
         #cursor {
-            width: 18px; height: 18px; background: white; border-radius: 50%;
+            width: 15px; height: 15px; background: white; border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 21000;
             mix-blend-mode: difference; transition: transform 0.1s ease;
         }
 
         /* NAVBAR */
         nav {
-            position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 500px; height: 44px;
-            background: rgba(20, 20, 20, 0.6); backdrop-filter: blur(15px);
+            position: fixed; top: 25px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 450px; height: 40px;
+            background: rgba(10, 10, 10, 0.7); backdrop-filter: blur(20px);
             border: 1px solid var(--border); border-radius: 100px;
             z-index: 1000; display: flex; justify-content: space-around; align-items: center;
         }
-        nav a { color: var(--text-dim); text-decoration: none; font-size: 12px; font-weight: 500; transition: 0.4s; }
-        nav a:hover { color: var(--text-main); }
+        nav a { color: var(--text-dim); text-decoration: none; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; }
+        nav a:hover { color: #fff; }
 
         /* HERO */
-        .hero { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: clamp(60px, 15vw, 140px); font-weight: 800; letter-spacing: -0.06em; line-height: 0.9; margin-bottom: 20px; }
-        .hero p { font-size: clamp(16px, 3vw, 20px); color: var(--text-dim); max-width: 500px; font-weight: 300; }
+        .hero { height: 80vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero h1 { font-size: clamp(60px, 12vw, 130px); font-weight: 800; letter-spacing: -0.05em; line-height: 0.9; }
 
-        /* CONTAINER BENTO */
-        .container { max-width: 1100px; margin: 0 auto; padding-bottom: 100px; }
+        /* BENTO GRID */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 100px; }
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
 
-        .bento-item { background: var(--card-bg); border-radius: 32px; border: 1px solid var(--border); display: flex; flex-direction: column; overflow: hidden; transition: 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .bento-item:hover { border-color: rgba(255,255,255,0.25); }
+        .bento-item { background: var(--card-bg); border-radius: 28px; border: 1px solid var(--border); overflow: hidden; transition: 0.5s ease; }
+        .bento-item:hover { border-color: #fff; }
 
-        /* SEÇÃO SOBRE MIM */
-        .about-card { padding: 50px; display: flex; flex-direction: column; justify-content: center; grid-column: span 3; background: linear-gradient(to right, #111, #080808); }
-        .about-card h2 { font-size: 32px; margin-bottom: 20px; font-weight: 700; letter-spacing: -0.03em; }
-        .about-card p { font-size: clamp(18px, 2.5vw, 22px); color: #eee; line-height: 1.6; font-weight: 300; max-width: 900px; }
-
-        /* GRID ITEMS */
         .large { grid-column: span 2; }
         .small { grid-column: span 1; }
-        .stats-item { background: transparent; border: none; padding: 40px; justify-content: center; }
-        .stats-item h2 { font-size: 100px; font-weight: 800; letter-spacing: -0.07em; line-height: 1; }
-        .video-box { width: 100%; aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center; border-bottom: 1px solid var(--border); color: #222; font-weight: bold; }
-        .card-info { padding: 35px; }
-        .card-info h3 { font-size: 24px; margin-bottom: 10px; }
-        .card-info p { color: var(--text-dim); font-size: 15px; }
+        .full { grid-column: span 3; }
+
+        .video-placeholder { width: 100%; aspect-ratio: 16/9; background: #000; display: flex; align-items: center; justify-content: center; color: #222; font-weight: bold; }
+        .card-info { padding: 30px; }
+        .card-info h3 { font-size: 22px; margin-bottom: 5px; }
+        .card-info p { color: var(--text-dim); font-size: 14px; }
+
+        /* STATS 70K */
+        .stats-item { background: transparent; border: none; padding: 30px; }
+        .stats-item h2 { font-size: 90px; font-weight: 800; letter-spacing: -0.05em; line-height: 1; }
+
+        /* FEEDBACK PINÉCIO */
+        .testimonial { padding: 50px; flex-direction: row; align-items: center; gap: 35px; background: linear-gradient(145deg, #0f0f10, #050505); }
+        .client-img { width: 85px; height: 85px; border-radius: 50%; object-fit: cover; filter: grayscale(1); border: 1px solid var(--border); transition: 0.5s; }
+        .testimonial:hover .client-img { filter: grayscale(0); }
+        .feedback-text { font-size: 20px; font-style: italic; font-weight: 300; line-height: 1.5; color: #d2d2d7; }
+
+        /* SOBRE MIM (ANTES DO CONTATO) */
+        .about-section { padding: 50px; background: #0a0a0b; border: 1px solid var(--border); }
+        .about-section h2 { font-size: 28px; margin-bottom: 15px; }
+        .about-section p { font-size: 18px; color: #d2d2d7; line-height: 1.6; font-weight: 300; }
 
         /* FOOTER */
-        footer { padding: 120px 20px; text-align: center; }
-        .cta { font-size: 18px; font-weight: 600; color: #000; background: #fff; padding: 20px 50px; border-radius: 100px; text-decoration: none; transition: 0.3s; display: inline-block; }
+        footer { padding: 100px 20px; text-align: center; }
+        .cta { font-size: 18px; font-weight: 600; color: #000; background: #fff; padding: 18px 45px; border-radius: 100px; text-decoration: none; transition: 0.3s; display: inline-block; }
         .cta:hover { transform: scale(1.05); }
 
         /* REVEAL */
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s ease-out; }
+        .reveal { opacity: 0; transform: translateY(30px); transition: 0.8s ease-out; }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
-            .large, .small, .about-card { grid-column: span 1; }
+            .large, .small, .full { grid-column: span 1; }
+            .testimonial { flex-direction: column; text-align: center; }
             #cursor { display: none; } * { cursor: auto; }
         }
     </style>
 </head>
 <body>
 
-    <div id="intro-screen">
-        <h1>OUCHI</h1>
-    </div>
-
+    <div id="intro-screen"><h1>OUCHI</h1></div>
     <div id="cursor"></div>
 
     <nav>
-        <a href="#about">Sobre</a>
         <a href="#work">Projetos</a>
-        <a href="https://x.com/ouchikk" target="_blank">Twitter</a>
+        <a href="#feedback">Feedback</a>
+        <a href="#about">Sobre</a>
+        <a href="https://x.com/ouchikk" target="_blank">Contato</a>
     </nav>
 
     <section class="hero">
         <h1 class="reveal">Ouchi.</h1>
-        <p class="reveal">Editor de vídeo focado em elevar o nível visual de grandes criadores.</p>
+        <p class="reveal" style="color:var(--text-dim); margin-top:10px;">High-end video editing studio.</p>
     </section>
 
     <div class="container">
         <div class="bento-grid">
             
-            <div class="bento-item about-card reveal" id="about">
-                <h2>A história por trás da timeline</h2>
+            <div class="bento-item large reveal" id="work">
+                <div class="video-placeholder">[PROJETO 01]</div>
+                <div class="card-info"><h3>Storytelling</h3><p>Edição narrativa avançada.</p></div>
+            </div>
+
+            <div class="bento-item small stats-item reveal">
+                <h2>70K</h2>
+                <p style="color:var(--text-dim)">Inscritos impactados.</p>
+            </div>
+
+            <div class="bento-item full testimonial reveal" id="feedback">
+                <img src="pinecio.jpg" alt="Pinécio" class="client-img">
+                <div>
+                    <p class="feedback-text">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
+                    <p style="margin-top:15px; font-size:14px;"><strong>Pinécio</strong> • YouTuber (44k)</p>
+                </div>
+            </div>
+
+            <div class="bento-item small reveal">
+                <div class="video-placeholder">[REELS]</div>
+                <div class="card-info"><h3>Retenção</h3></div>
+            </div>
+
+            <div class="bento-item large reveal">
+                <div class="video-placeholder">[COMMERCIAL]</div>
+                <div class="card-info"><h3>Luxury Style</h3></div>
+            </div>
+
+            <div class="bento-item full about-section reveal" id="about">
+                <h2>Sobre Mim</h2>
                 <p>
                     Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual! 
                     <br><br>
@@ -149,45 +164,23 @@
                 </p>
             </div>
 
-            <div class="bento-item large reveal" id="work">
-                <div class="video-box">[VÍDEO PRINCIPAL]</div>
-                <div class="card-info">
-                    <h3>Impacto Visual</h3>
-                    <p>Narrativa e color grading avançado.</p>
-                </div>
-            </div>
-
-            <div class="bento-item small stats-item reveal">
-                <h2>70K</h2>
-                <p>Pessoas impactadas.</p>
-            </div>
-
-            <div class="bento-item small reveal">
-                <div class="video-box">[SOCIAL]</div>
-                <div class="card-info"><h3>Retenção</h3></div>
-            </div>
-
-            <div class="bento-item large reveal">
-                <div class="video-box">[COMMERCIAL]</div>
-                <div class="card-info"><h3>Estética Premium</h3></div>
-            </div>
-
         </div>
     </div>
 
     <footer>
-        <h2 class="reveal" style="margin-bottom: 50px; font-size: 40px;">Pronto para transformar seu vídeo?</h2>
+        <h2 class="reveal" style="margin-bottom: 40px; font-size: 32px;">Vamos elevar seu conteúdo?</h2>
         <a href="https://x.com/ouchikk" target="_blank" class="cta reveal">Mandar Mensagem</a>
     </footer>
 
     <script>
-        // Lógica da Intro
+        // Intro Control
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const intro = document.getElementById('intro-screen');
+                intro.style.transition = "opacity 0.6s ease";
                 intro.style.opacity = '0';
-                setTimeout(() => intro.style.visibility = 'hidden', 1000);
-            }, 2000); // Tempo da animação central
+                setTimeout(() => intro.style.visibility = 'hidden', 600);
+            }, 1200); 
         });
 
         // Cursor
@@ -197,17 +190,17 @@
             cursor.style.top = e.clientY + 'px';
         });
 
-        // Scroll Reveal
+        // Reveal
         function reveal() {
             var reveals = document.querySelectorAll(".reveal");
             for (var i = 0; i < reveals.length; i++) {
                 var windowHeight = window.innerHeight;
                 var elementTop = reveals[i].getBoundingClientRect().top;
-                if (elementTop < windowHeight - 100) reveals[i].classList.add("active");
+                if (elementTop < windowHeight - 80) reveals[i].classList.add("active");
             }
         }
         window.addEventListener("scroll", reveal);
-        setTimeout(reveal, 2500); // Inicia os reveals após a intro
+        setTimeout(reveal, 1800);
     </script>
 </body>
 </html>
