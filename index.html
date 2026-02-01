@@ -19,7 +19,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; }
         body { background: var(--bg); color: var(--text-main); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* INTRO RÁPIDA */
+        /* INTRO */
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 20000; display: flex; justify-content: center; align-items: center;
@@ -34,7 +34,7 @@
             100% { opacity: 0; transform: scale(1.1); filter: blur(5px); }
         }
 
-        /* CURSOR FLUIDO */
+        /* CURSOR */
         #cursor {
             width: 12px; height: 12px; background: white; border-radius: 50%;
             position: fixed; pointer-events: none; z-index: 21000;
@@ -50,7 +50,7 @@
             border: 1px solid var(--border); border-radius: 100px;
             z-index: 1000; display: flex; gap: 20px; align-items: center;
         }
-        nav a { color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; transition: 0.3s var(--ease-apple); white-space: nowrap; }
+        nav a { color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1.2px; transition: 0.3s var(--ease-apple); }
         nav a:hover { color: #fff; transform: translateY(-1px); }
 
         /* HERO */
@@ -60,7 +60,7 @@
             background: linear-gradient(180deg, #fff 40%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
 
-        /* CONTAINER BENTO */
+        /* BENTO GRID */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 25px 120px; }
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
 
@@ -68,46 +68,48 @@
             background: var(--card-bg); border-radius: 32px; border: 1px solid var(--border); overflow: hidden; 
             transition: all 0.6s var(--ease-out-expo); position: relative;
         }
-        .bento-item:hover { transform: translateY(-10px) scale(1.01); border-color: rgba(255,255,255,0.2); }
+        .bento-item:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.2); }
 
         .large { grid-column: span 2; }
         .small { grid-column: span 1; }
         .full { grid-column: span 3; }
 
-        /* IFRAME WRAPPER */
         .video-container { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; }
         .video-container iframe { width: 100%; height: 100%; border: 0; }
         .video-container.vertical { aspect-ratio: 9/16; max-height: 500px; }
 
-        .card-info { padding: 35px; }
-        .card-info h3 { font-size: 24px; font-weight: 600; }
-        .card-info p { color: var(--text-dim); font-size: 15px; margin-top: 5px; }
+        .card-info { padding: 30px; }
+        .card-info h3 { font-size: 22px; font-weight: 600; }
+        .card-info p { color: var(--text-dim); font-size: 14px; margin-top: 5px; }
 
-        /* STATS 70K */
-        .stats-item { background: transparent; border: none; display: flex; flex-direction: column; justify-content: center; }
-        .stats-item h2 { font-size: clamp(80px, 10vw, 110px); font-weight: 800; letter-spacing: -0.08em; color: #fff; }
+        /* TESTIMONIAL */
+        .testimonial { padding: 50px; display: flex; align-items: center; gap: 30px; background: linear-gradient(145deg, #121213, #050505); }
+        .client-img { width: 80px; height: 80px; border-radius: 50%; filter: grayscale(1); border: 1px solid var(--border); transition: 0.5s; }
+        .testimonial:hover .client-img { filter: grayscale(0); transform: scale(1.1); }
 
-        /* FEEDBACK PINÉCIO */
-        .testimonial { padding: 60px; display: flex; align-items: center; gap: 40px; background: linear-gradient(145deg, #121213, #050505); }
-        .client-img { width: 95px; height: 95px; border-radius: 50%; filter: grayscale(1); border: 2px solid var(--border); transition: 0.8s var(--ease-out-expo); }
-        .testimonial:hover .client-img { filter: grayscale(0); transform: scale(1.1); border-color: #fff; }
-
-        /* SOBRE MIM */
-        .about-section { padding: 60px; background: #0a0a0b; border: 1px solid var(--border); }
-        .about-section p { font-size: 19px; color: #d2d2d7; line-height: 1.7; font-weight: 300; max-width: 850px; }
+        /* SOBRE MIM (COM FOTO) */
+        .about-grid { display: grid; grid-template-columns: 1fr 1.5fr; align-items: stretch; background: #0a0a0b; }
+        .about-photo { width: 100%; height: 100%; min-height: 400px; overflow: hidden; position: relative; border-right: 1px solid var(--border); }
+        .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.8) contrast(1.1); transition: 1.2s var(--ease-out-expo); }
+        .bento-item:hover .about-photo img { transform: scale(1.05); filter: saturate(1); }
+        .about-content { padding: 60px; display: flex; flex-direction: column; justify-content: center; }
+        .about-content h2 { font-size: 32px; margin-bottom: 20px; letter-spacing: -0.04em; }
+        .about-content p { font-size: 18px; color: #d2d2d7; line-height: 1.7; font-weight: 300; }
 
         /* FOOTER */
-        footer { padding: 150px 20px; text-align: center; }
-        .cta { font-size: 18px; font-weight: 700; color: #000; background: #fff; padding: 22px 55px; border-radius: 100px; text-decoration: none; transition: 0.5s var(--ease-out-expo); display: inline-block; }
-        .cta:hover { transform: scale(1.1); box-shadow: 0 0 30px rgba(255,255,255,0.15); }
+        footer { padding: 120px 20px; text-align: center; }
+        .cta { font-size: 18px; font-weight: 700; color: #000; background: #fff; padding: 20px 50px; border-radius: 100px; text-decoration: none; transition: 0.5s var(--ease-out-expo); display: inline-block; }
+        .cta:hover { transform: scale(1.05); box-shadow: 0 10px 30px rgba(255,255,255,0.1); }
 
         /* REVEAL */
-        .reveal { opacity: 0; transform: translateY(40px); transition: all 1s var(--ease-out-expo); }
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 1s var(--ease-out-expo); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
             .large, .small, .full { grid-column: span 1; }
+            .about-grid { grid-template-columns: 1fr; }
+            .about-photo { min-height: 350px; border-right: none; border-bottom: 1px solid var(--border); }
             .testimonial { flex-direction: column; text-align: center; }
             #cursor { display: none; } * { cursor: auto; }
         }
@@ -119,16 +121,16 @@
     <div id="cursor"></div>
 
     <nav>
-        <a href="#work" class="nav-link">Work</a>
-        <a href="#feedback" class="nav-link">Reviews</a>
-        <a href="https://ytjobs.co/talent/vitrine/490722" target="_blank" class="nav-link" style="color: #fff; font-weight: 800; border-left: 1px solid var(--border); padding-left: 15px;">Full Portfolio ↗</a>
-        <a href="#about" class="nav-link">About</a>
-        <a href="https://x.com/ouchikk" target="_blank" class="nav-link">Contact</a>
+        <a href="#work">Work</a>
+        <a href="#feedback">Reviews</a>
+        <a href="https://ytjobs.co/talent/vitrine/490722" target="_blank" style="color: #fff; font-weight: 800;">Full Portfolio ↗</a>
+        <a href="#about">About</a>
+        <a href="https://x.com/ouchikk" target="_blank">Contact</a>
     </nav>
 
     <section class="hero">
         <h1 class="reveal">Ouchi.</h1>
-        <p class="reveal" style="color:var(--text-dim); margin-top:15px; letter-spacing: 2px; font-weight: 300; font-size: 13px; text-transform: uppercase;">Editing High-Performance content</p>
+        <p class="reveal" style="color:var(--text-dim); margin-top:15px; letter-spacing: 2px; font-size: 12px; text-transform: uppercase;">Premium Video Editing</p>
     </section>
 
     <div class="container">
@@ -138,20 +140,20 @@
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/3ygmkNIVjbc" allowfullscreen></iframe>
                 </div>
-                <div class="card-info"><h3>Storytelling Visual</h3><p>Edição de vídeo longo com foco em retenção e narrativa.</p></div>
+                <div class="card-info"><h3>Storytelling Visual</h3><p>Narrativa avançada para grandes criadores.</p></div>
             </div>
 
-            <div class="bento-item small stats-item reveal">
-                <p style="color:var(--text-dim); text-transform:uppercase; font-size:11px; letter-spacing:1px; margin-bottom:10px;">Reach</p>
-                <h2>70K</h2>
-                <p style="color:var(--text-dim); margin-top:5px;">Followers Impacted</p>
+            <div class="bento-item small reveal" style="display:flex; flex-direction:column; justify-content:center; padding: 40px; text-align: center;">
+                <p style="color:var(--text-dim); text-transform:uppercase; font-size:10px; letter-spacing:2px;">Impact</p>
+                <h2 style="font-size: 80px; font-weight: 800; letter-spacing: -5px;">70K+</h2>
+                <p style="color:var(--text-dim); font-size: 13px;">Followers Reached</p>
             </div>
 
             <div class="bento-item full testimonial reveal" id="feedback">
                 <img src="pinecio.jpg" alt="Pinécio" class="client-img">
                 <div>
-                    <p class="feedback-text">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
-                    <p style="margin-top:20px; font-size:14px; opacity:0.6; letter-spacing:1px;">PINÉCIO • YOUTUBER</p>
+                    <p style="font-size: 18px; font-style: italic; color: #eee;">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
+                    <p style="margin-top:15px; font-size:12px; opacity:0.5; letter-spacing:1px;">PINÉCIO • YOUTUBER</p>
                 </div>
             </div>
 
@@ -159,31 +161,38 @@
                 <div class="video-container vertical">
                     <iframe src="https://www.youtube.com/embed/2C-7sUFAEfo" allowfullscreen></iframe>
                 </div>
-                <div class="card-info"><h3>Short Content</h3><p>Vídeos verticais de alto impacto.</p></div>
+                <div class="card-info"><h3>Short Content</h3></div>
             </div>
 
             <div class="bento-item large reveal">
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/Yrb1ssvNzFU" allowfullscreen></iframe>
                 </div>
-                <div class="card-info"><h3>High Performance</h3><p>Edição focada em dinâmica e clareza para conteúdos competitivos.</p></div>
+                <div class="card-info"><h3>High Performance</h3></div>
             </div>
 
-            <div class="bento-item full about-section reveal" id="about">
-                <h2 style="color: #fff; margin-bottom: 20px;">A Jornada.</h2>
-                <p>
-                    Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual! 
-                    <br><br>
-                    Desde então, tenho trabalhado pra de todas as maneiras, deixar seu vídeo cativante e interessante pro público.
-                </p>
+            <div class="bento-item full reveal" id="about">
+                <div class="about-grid">
+                    <div class="about-photo">
+                        <img src="image_07351c.jpg" alt="Ouchi Photo">
+                    </div>
+                    <div class="about-content">
+                        <h2>A Jornada.</h2>
+                        <p>
+                            Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual! 
+                            <br><br>
+                            Desde então, tenho trabalhado pra de todas as maneiras, deixar seu vídeo cativante e interessante pro público.
+                        </p>
+                    </div>
+                </div>
             </div>
 
         </div>
     </div>
 
     <footer>
-        <h2 class="reveal" style="margin-bottom: 50px; font-size: clamp(32px, 5vw, 48px);">Pronto para o próximo nível?</h2>
-        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal">Transforme seu conteudo</a>
+        <h2 class="reveal" style="margin-bottom: 40px; font-size: clamp(30px, 5vw, 45px); letter-spacing: -2px;">Ready to create something great?</h2>
+        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal">Get in Touch</a>
     </footer>
 
     <script>
@@ -228,4 +237,3 @@
     </script>
 </body>
 </html>
-
