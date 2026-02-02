@@ -23,6 +23,15 @@
 
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
+        /* CURSOR DEFINITIVO */
+        #cursor { 
+            width: 10px; height: 10px; background: white; border-radius: 50%; 
+            position: fixed; pointer-events: none; z-index: 50000; 
+            mix-blend-mode: difference; transition: width 0.3s var(--ease-apple), height 0.3s var(--ease-apple), opacity 0.3s; 
+        }
+        .cursor-hover { transform: scale(5.5); background: rgba(255,255,255,0.15); }
+        .cursor-video { transform: scale(3.5); background: white; mix-blend-mode: normal !important; }
+
         /* FILM GRAIN */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -30,16 +39,6 @@
             opacity: 0.02; pointer-events: none; z-index: 30000; animation: noise 0.2s infinite;
         }
         @keyframes noise { 0% { transform: translate(0,0) } 50% { transform: translate(-1%, 0.5%) } 100% { transform: translate(0.5%, -1%) } }
-
-        /* CURSOR ELEGante */
-        #cursor { 
-            width: 10px; height: 10px; background: white; border-radius: 50%; 
-            position: fixed; pointer-events: none; z-index: 50000; 
-            mix-blend-mode: difference; transition: width 0.4s var(--ease-apple), height 0.4s var(--ease-apple), opacity 0.3s, background 0.3s; 
-        }
-        .cursor-hover { transform: scale(5.5); background: rgba(255,255,255,0.15); }
-        .cursor-video-active { transform: scale(4); background: white; mix-blend-mode: normal !important; }
-        .cursor-hidden { opacity: 0; }
 
         /* INTRO */
         #intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 40000; display: flex; justify-content: center; align-items: center; }
@@ -82,12 +81,9 @@
 
         .large { grid-column: span 2; } .small { grid-column: span 1; } .full { grid-column: span 3; }
 
-        /* VIDEO ELEGANCE FIX */
-        .video-wrapper { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; }
-        /* Camada invisível que mantém o cursor funcionando */
-        .video-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: none; }
-        .video-wrapper iframe { width: 100%; height: 100%; border: 0; position: relative; z-index: 1; }
-        .video-wrapper.playing .video-overlay { display: none; } /* Libera controle após o primeiro clique */
+        /* VIDEO FIX DEFINITIVO */
+        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; position: relative; }
+        .video-container iframe { width: 100%; height: 100%; border: 0; position: relative; }
 
         .card-info { padding: 45px; }
         .card-info h3 { font-size: 26px; font-weight: 600; }
@@ -119,7 +115,8 @@
             .about-grid { grid-template-columns: 1fr; }
             .about-photo { min-height: 300px; }
             #cursor { display: none; }
-            .video-overlay { display: none; } /* Mobile usa comportamento padrão */
+            nav { justify-content: flex-start; }
+            .status-badge { display: none; }
         }
     </style>
 </head>
@@ -151,9 +148,8 @@
         <div class="bento-grid">
             
             <div class="bento-item large reveal snd-hover" id="work">
-                <div class="video-wrapper">
-                    <div class="video-overlay"></div>
-                    <iframe src="https://www.youtube.com/embed/3ygmkNIVjbc?enablejsapi=1" allowfullscreen></iframe>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/3ygmkNIVjbc" allowfullscreen></iframe>
                 </div>
                 <div class="card-info"><h3>Storytelling Visual</h3><p>Narrativa avançada para grandes criadores.</p></div>
             </div>
@@ -171,17 +167,15 @@
             </div>
 
             <div class="bento-item small reveal snd-hover">
-                <div class="video-wrapper" style="aspect-ratio: 9/16; max-height: 550px;">
-                    <div class="video-overlay"></div>
-                    <iframe src="https://www.youtube.com/embed/2C-7sUFAEfo?enablejsapi=1" allowfullscreen></iframe>
+                <div class="video-container" style="aspect-ratio: 9/16; max-height: 550px;">
+                    <iframe src="https://www.youtube.com/embed/2C-7sUFAEfo" allowfullscreen></iframe>
                 </div>
                 <div class="card-info"><h3>Short Content</h3></div>
             </div>
 
             <div class="bento-item large reveal snd-hover">
-                <div class="video-wrapper">
-                    <div class="video-overlay"></div>
-                    <iframe src="https://www.youtube.com/embed/Yrb1ssvNzFU?enablejsapi=1" allowfullscreen></iframe>
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/Yrb1ssvNzFU" allowfullscreen></iframe>
                 </div>
                 <div class="card-info"><h3>High Performance</h3></div>
             </div>
@@ -236,28 +230,27 @@
         window.addEventListener('resize', initCanvas);
         initCanvas(); draw();
 
-        // CURSOR ELEGANT LOGIC
+        // CURSOR LOGIC - TOTAL FIX
         const cursor = document.getElementById('cursor');
+        let mouseX = 0, mouseY = 0;
+
         document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px';
-            cursor.style.top = e.clientY + 'px';
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+            cursor.style.left = mouseX + 'px';
+            cursor.style.top = mouseY + 'px';
         });
 
-        // Interação com a camada de vídeo
-        document.querySelectorAll('.video-overlay').forEach(overlay => {
-            overlay.addEventListener('mouseenter', () => {
-                cursor.classList.add('cursor-video-active');
-            });
-            overlay.addEventListener('mouseleave', () => {
-                cursor.classList.remove('cursor-video-active');
-            });
-            overlay.addEventListener('click', function() {
-                const wrapper = this.parentElement;
-                wrapper.classList.add('playing'); // Remove a overlay
-                cursor.classList.remove('cursor-video-active');
-                cursor.classList.add('cursor-hidden'); // Esconde quando está manipulando o player
-            });
-        });
+        // Detectar entrada em iframes para mudar o estilo sem "travar"
+        const iframes = document.querySelectorAll('iframe');
+        setInterval(() => {
+            const hovered = document.elementFromPoint(mouseX, mouseY);
+            if (hovered && hovered.tagName === 'IFRAME') {
+                cursor.classList.add('cursor-video');
+            } else {
+                cursor.classList.remove('cursor-video');
+            }
+        }, 100);
 
         // SCROLL INDICATOR
         window.addEventListener('scroll', () => {
