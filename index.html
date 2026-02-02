@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
     <title>Ouchi | High-Performance Video Editor</title>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
     
     <style>
@@ -15,15 +17,16 @@
             --border: rgba(255, 255, 255, 0.08);
             --glass-shine: rgba(255, 255, 255, 0.05);
             --ease-apple: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text-main); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* CANVAS BACKGROUND */
+        /* NOVO: CANVAS PARA ONDAS E PARTÍCULAS */
         #bg-canvas {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; background: radial-gradient(circle at center, #0a0a0a 0%, #000 100%);
+            z-index: -1; pointer-events: none;
         }
 
         /* FILM GRAIN */
@@ -34,76 +37,90 @@
         }
         @keyframes noise { 0% { transform: translate(0,0) } 50% { transform: translate(-1%, 0.5%) } 100% { transform: translate(0.5%, -1%) } }
 
-        /* INTRO */
+        /* INTRO & CURSOR */
         #intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 40000; display: flex; justify-content: center; align-items: center; }
-        #intro-screen h1 { font-size: 50px; font-weight: 800; letter-spacing: 20px; animation: glitch-intro 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards; }
+        #intro-screen h1 { font-size: 50px; font-weight: 800; letter-spacing: 20px; animation: glitch-intro 1.2s var(--ease-out-expo) forwards; }
         @keyframes glitch-intro { 0% { opacity: 0; transform: scale(0.9); filter: blur(10px); } 40% { opacity: 1; filter: blur(0); } 100% { opacity: 0; transform: scale(1.1); filter: blur(8px); } }
-
         #cursor { width: 10px; height: 10px; background: white; border-radius: 50%; position: fixed; pointer-events: none; z-index: 50000; mix-blend-mode: difference; transition: width 0.4s var(--ease-apple), height 0.4s var(--ease-apple); }
         .cursor-hover { transform: scale(5); background: rgba(255,255,255,0.1); }
 
-        /* NAV ROLÁVEL MOBILE */
+        /* NAV - ROLÁVEL NO MOBILE */
         nav {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-            width: fit-content; max-width: 95%; padding: 0 20px; height: 55px;
-            background: rgba(10, 10, 10, 0.5); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            width: fit-content; max-width: 95%; padding: 0 10px 0 25px; height: 50px;
+            background: rgba(15, 15, 15, 0.4); backdrop-filter: blur(30px) saturate(180%);
             border: 1px solid var(--border); border-radius: 100px;
-            z-index: 10000; display: flex; gap: 20px; align-items: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 10000; display: flex; gap: 24px; align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px var(--glass-shine);
             overflow-x: auto; white-space: nowrap; scrollbar-width: none;
         }
         nav::-webkit-scrollbar { display: none; }
         
-        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); flex-shrink: 0; }
+        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); margin-right: 10px; flex-shrink: 0; }
+        .status-text { font-size: 9px; font-weight: 600; text-transform: uppercase; color: #fff; letter-spacing: 1px; }
         .status-dot { width: 6px; height: 6px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88; animation: pulse 2s infinite; }
         @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
-        
-        nav a { color: var(--text-dim); text-decoration: none; font-size: 11px; font-weight: 500; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-cta { background: #fff; color: #000 !important; padding: 8px 18px; border-radius: 50px; font-weight: 800 !important; }
+
+        nav a { color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.4s var(--ease-apple); flex-shrink: 0; }
+        .nav-cta { background: #fff; color: #000 !important; padding: 10px 22px; border-radius: 50px; font-size: 10px !important; font-weight: 800 !important; }
 
         /* HERO */
-        .hero { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { font-size: clamp(60px, 15vw, 150px); font-weight: 800; letter-spacing: -0.07em; line-height: 0.9; }
-        .hero p { color: var(--text-dim); margin-top: 20px; letter-spacing: 5px; font-size: 11px; text-transform: uppercase; }
+        .hero { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; }
+        .hero h1 { font-size: clamp(70px, 16vw, 160px); font-weight: 800; letter-spacing: -0.07em; line-height: 0.8; background: linear-gradient(180deg, #fff 50%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero p { color: var(--text-dim); margin-top: 25px; letter-spacing: 6px; font-size: 10px; font-weight: 300; text-transform: uppercase; }
 
-        /* BENTO */
-        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px 100px; }
-        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .bento-item { background: var(--card-bg); border-radius: 35px; border: 1px solid var(--border); overflow: hidden; backdrop-filter: blur(10px); transition: 0.5s; }
-        .bento-item:hover { transform: translateY(-5px); border-color: rgba(255,255,255,0.15); }
-        .full { grid-column: span 3; } .large { grid-column: span 2; }
+        /* BENTO GRID */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 25px 120px; }
+        .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+        .bento-item { background: var(--card-bg); border-radius: 40px; border: 1px solid var(--border); overflow: hidden; transition: all 0.8s var(--ease-out-expo); position: relative; box-shadow: inset 0 1px 1px var(--glass-shine), 0 20px 40px rgba(0,0,0,0.3); backdrop-filter: blur(10px); }
+        .bento-item:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.15); box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
 
-        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; position: relative; cursor: pointer; }
-        .video-container img { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+        .large { grid-column: span 2; }
+        .small { grid-column: span 1; }
+        .full { grid-column: span 3; }
+
+        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; position: relative; }
+        .video-container iframe { width: 100%; height: 100%; border: 0; }
+        .card-info { padding: 45px; }
+        .card-info h3 { font-size: 26px; font-weight: 600; }
+        .card-info p { color: var(--text-dim); font-size: 16px; margin-top: 10px; font-weight: 200; line-height: 1.6; }
+
+        /* TESTIMONIAL */
+        .testimonial { padding: 80px 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 30px; background: linear-gradient(145deg, #0a0a0a, #030303); }
+        .client-img { width: 100px; height: 100px; border-radius: 50%; filter: grayscale(1); border: 1px solid var(--border); transition: 1s var(--ease-apple); }
+        .testimonial:hover .client-img { filter: grayscale(0); transform: scale(1.1); }
+        .testimonial p { font-size: 22px; font-weight: 200; color: #eee; line-height: 1.6; max-width: 800px; }
+
+        /* SOBRE MIM / JORNADA */
+        .about-grid { display: grid; grid-template-columns: 1fr 1.3fr; align-items: stretch; background: #050505; }
+        .about-photo { width: 100%; height: 100%; min-height: 550px; overflow: hidden; border-right: 1px solid var(--border); }
+        .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.7); transition: 1.5s var(--ease-out-expo); }
+        .bento-item:hover .about-photo img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
+        .about-content { padding: 80px; display: flex; flex-direction: column; justify-content: center; }
+        .about-content h2 { font-size: 48px; margin-bottom: 30px; font-weight: 800; letter-spacing: -0.05em; }
+        .about-content p { font-size: 19px; color: #a1a1a6; line-height: 1.9; font-weight: 200; }
+
+        footer { padding: 180px 20px; text-align: center; }
+        .cta { font-size: 22px; font-weight: 800; color: #000; background: #fff; padding: 28px 70px; border-radius: 100px; text-decoration: none; transition: 0.6s var(--ease-out-expo); display: inline-block; }
         
-        .card-info { padding: 35px; }
-        .card-info h3 { font-size: 24px; margin-bottom: 8px; }
-        .card-info p { color: var(--text-dim); font-weight: 200; line-height: 1.5; }
-
-        .testimonial { padding: 60px 20px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 20px; }
-        .client-img { width: 80px; height: 80px; border-radius: 50%; filter: grayscale(1); border: 1px solid var(--border); }
-
-        .about-grid { display: grid; grid-template-columns: 1fr 1.2fr; }
-        .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(1); opacity: 0.8; }
-        .about-content { padding: 50px; }
-
-        footer { padding: 100px 20px; text-align: center; }
-        .cta { font-size: 18px; font-weight: 800; color: #000; background: #fff; padding: 22px 50px; border-radius: 100px; text-decoration: none; }
-
-        .reveal { opacity: 0; transform: translateY(30px); transition: 1s cubic-bezier(0.19, 1, 0.22, 1); }
+        .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s var(--ease-out-expo); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        @media (max-width: 800px) {
+        @media (max-width: 900px) {
             .bento-grid { grid-template-columns: 1fr; }
-            .large, .full { grid-column: span 1; }
+            .large, .small, .full { grid-column: span 1; }
             .about-grid { grid-template-columns: 1fr; }
+            .about-photo { min-height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
             #cursor { display: none; }
+            nav { justify-content: flex-start; }
+            .status-badge { display: none; }
         }
     </style>
 </head>
 <body onclick="initAudio()">
 
     <canvas id="bg-canvas"></canvas>
+
     <div id="intro-screen"><h1>OUCHI</h1></div>
     <div id="cursor"></div>
 
@@ -114,7 +131,7 @@
         </div>
         <a href="#work" class="snd-hover">Trabalho</a>
         <a href="#feedback" class="snd-hover">Reviews</a>
-        <a href="https://ytjobs.co/talent/vitrine/490722" target="_blank" class="snd-hover" style="color:#fff">Portfólio</a>
+        <a href="https://ytjobs.co/talent/vitrine/490722" target="_blank" class="snd-hover" style="color: #fff; font-weight: 800;">Portfólio ↗</a>
         <a href="#about" class="snd-hover">Sobre</a>
         <a href="https://x.com/ouchikk" target="_blank" class="nav-cta snd-hover">Contato</a>
     </nav>
@@ -126,40 +143,66 @@
 
     <div class="container">
         <div class="bento-grid">
-            <div class="bento-item large reveal snd-hover" data-id="3ygmkNIVjbc">
-                <div class="video-container"><img src="https://img.youtube.com/vi/3ygmkNIVjbc/maxresdefault.jpg"></div>
-                <div class="card-info"><h3>Storytelling Visual</h3><p>Narrativa avançada para retenção extrema.</p></div>
+            
+            <div class="bento-item large reveal snd-hover" id="work">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/3ygmkNIVjbc" allowfullscreen></iframe>
+                </div>
+                <div class="card-info"><h3>Storytelling Visual</h3><p>Narrativa avançada para grandes criadores.</p></div>
             </div>
 
-            <div class="bento-item reveal" style="display:flex; flex-direction:column; justify-content:center; text-align:center;">
-                <h2 style="font-size:60px; font-weight:800;">70K+</h2>
-                <p style="color:var(--text-dim); font-size:12px; letter-spacing:2px;">VIEWS</p>
+            <div class="bento-item small reveal snd-hover" style="display:flex; flex-direction:column; justify-content:center; padding: 40px; text-align: center;">
+                <p style="color:var(--text-dim); text-transform:uppercase; font-size:10px; letter-spacing:3px;">Impacto</p>
+                <h2 style="font-size: 85px; font-weight: 800; letter-spacing: -7px;">70K+</h2>
+                <p style="color:var(--text-dim); font-size: 13px; font-weight: 200;">Visualizações</p>
             </div>
 
             <div class="bento-item full testimonial reveal" id="feedback">
                 <img src="pinecio.jpg" alt="Pinécio" class="client-img">
-                <p style="font-size:18px; font-weight:200;">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
-                <p style="font-size:10px; color:var(--text-dim); letter-spacing:2px;">PINECIO • YOUTUBER</p>
+                <p>“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
+                <p style="font-size:11px; color:var(--text-dim); letter-spacing:2px; font-weight: 600;">PINECIO • YOUTUBER</p>
+            </div>
+
+            <div class="bento-item small reveal snd-hover">
+                <div class="video-container" style="aspect-ratio: 9/16; max-height: 550px;">
+                    <iframe src="https://www.youtube.com/embed/2C-7sUFAEfo" allowfullscreen></iframe>
+                </div>
+                <div class="card-info"><h3>Short Content</h3></div>
+            </div>
+
+            <div class="bento-item large reveal snd-hover">
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/Yrb1ssvNzFU" allowfullscreen></iframe>
+                </div>
+                <div class="card-info"><h3>High Performance</h3></div>
             </div>
 
             <div class="bento-item full reveal" id="about">
                 <div class="about-grid">
-                    <div class="about-photo"><img src="image_07351c.jpg"></div>
+                    <div class="about-photo">
+                        <img src="image_07351c.jpg" alt="Ouchi Photo">
+                    </div>
                     <div class="about-content">
                         <h2>A Jornada.</h2>
-                        <p>Transformo vídeos em ativos de alta performance. Focado em cada detalhe, do áudio ao ritmo da edição.</p>
+                        <p>
+                            Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual! 
+                            <br><br>
+                            Desde então, transformo vídeos em ativos de alta retenção, garantindo que cada frame contribua para uma narrativa cativante.
+                        </p>
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <footer>
-        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal snd-hover">Vamos conversar</a>
+        <h2 class="reveal" style="margin-bottom: 50px; font-size: clamp(30px, 6vw, 60px); letter-spacing: -3px; font-weight: 800;">Vamos elevar seu conteúdo?</h2>
+        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal snd-hover">Entre em contato</a>
     </footer>
 
     <script>
-        // --- BACKGROUND WAVES & PARTICLES ---
+        // --- CANVAS BACKGROUND (ONDAS E PARTÍCULAS) ---
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
         let w, h, particles = [];
@@ -168,60 +211,87 @@
             w = canvas.width = window.innerWidth;
             h = canvas.height = window.innerHeight;
             particles = [];
-            for(let i=0; i<60; i++) particles.push({ x: Math.random()*w, y: Math.random()*h, s: Math.random()*1, d: Math.random()*2*Math.PI });
+            for(let i=0; i<50; i++) {
+                particles.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    size: Math.random() * 1.5,
+                    speed: Math.random() * 0.5 + 0.1,
+                    angle: Math.random() * Math.PI * 2
+                });
+            }
         }
 
         function draw() {
-            ctx.clearRect(0,0,w,h);
-            const time = Date.now() * 0.001;
+            ctx.clearRect(0, 0, w, h);
+            const time = Date.now() * 0.0008;
 
-            // Ondas Pretas Súteis
-            ctx.strokeStyle = 'rgba(255,255,255,0.03)';
+            // Desenhar Ondas (Sutis)
+            ctx.beginPath();
             ctx.lineWidth = 1;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
             for(let i=0; i<3; i++) {
                 ctx.beginPath();
                 for(let x=0; x<w; x+=10) {
-                    let y = h/2 + Math.sin(x*0.002 + time + i) * 50 + Math.cos(x*0.001 + time) * 30;
-                    if(x===0) ctx.moveTo(x,y); else ctx.lineTo(x,y);
+                    const y = h/2 + Math.sin(x*0.002 + time + i) * 60 + Math.cos(x*0.001 + time) * 40;
+                    if(x===0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
                 }
                 ctx.stroke();
             }
 
-            // Partículas
-            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            // Desenhar Partículas
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
             particles.forEach(p => {
-                p.x += Math.cos(p.d) * p.s;
-                p.y += Math.sin(p.d) * p.s;
-                if(p.x<0) p.x=w; if(p.x>w) p.x=0; if(p.y<0) p.y=h; if(p.y>h) p.y=0;
-                ctx.beginPath(); ctx.arc(p.x, p.y, 1, 0, Math.PI*2); ctx.fill();
+                p.x += Math.cos(p.angle) * p.speed;
+                p.y += Math.sin(p.angle) * p.speed;
+                if(p.x < 0) p.x = w; if(p.x > w) p.x = 0;
+                if(p.y < 0) p.y = h; if(p.y > h) p.y = 0;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                ctx.fill();
             });
             requestAnimationFrame(draw);
         }
 
         window.addEventListener('resize', initCanvas);
-        initCanvas(); draw();
+        initCanvas();
+        draw();
 
-        // --- VIDEO LAZY LOAD ---
-        document.querySelectorAll('.bento-item[data-id]').forEach(item => {
-            item.addEventListener('click', function() {
-                const id = this.getAttribute('data-id');
-                this.querySelector('.video-container').innerHTML = `<iframe src="https://www.youtube.com/embed/${id}?autoplay=1" style="width:100%;height:100%;border:0" allow="autoplay; encrypted-media" allowfullscreen></iframe>`;
-            });
-        });
-
-        // --- AUDIO & CURSOR ---
+        // --- ÁUDIO E INTERAÇÕES ---
         const hoverSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'); 
-        hoverSound.volume = 0.1;
-        let audioInit = false;
-        function initAudio() { audioInit = true; }
+        hoverSound.volume = 0.15;
+        let audioInitialized = false;
+
+        function initAudio() {
+            if (audioInitialized) return;
+            audioInitialized = true;
+            const startSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2577/2577-preview.mp3');
+            startSound.volume = 0.1; startSound.play().catch(()=>{});
+        }
 
         document.querySelectorAll('.snd-hover').forEach(el => {
-            el.addEventListener('mouseenter', () => { if(audioInit) { hoverSound.currentTime=0; hoverSound.play().catch(()=>{}); } });
+            el.addEventListener('mouseenter', () => { if (audioInitialized) { hoverSound.currentTime = 0; hoverSound.play().catch(()=>{}); } });
         });
 
+        // Título dinâmico
+        let docTitle = document.title;
+        window.addEventListener("blur", () => { document.title = "Volte aqui... 🎬"; });
+        window.addEventListener("focus", () => { document.title = docTitle; });
+
+        // Cursor e Reveal
         const cursor = document.getElementById('cursor');
         document.addEventListener('mousemove', e => {
-            cursor.style.left = e.clientX + 'px'; cursor.style.top = e.clientY + 'px';
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const intro = document.getElementById('intro-screen');
+                intro.style.transition = "opacity 0.8s var(--ease-apple)";
+                intro.style.opacity = '0';
+                setTimeout(() => intro.style.display = 'none', 800);
+            }, 1000); 
         });
 
         document.querySelectorAll('a, .bento-item').forEach(el => {
@@ -229,17 +299,15 @@
             el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
         });
 
-        window.addEventListener('load', () => { 
-            setTimeout(() => document.getElementById('intro-screen').style.display='none', 1200); 
-            reveal();
-        });
-
         function reveal() {
-            document.querySelectorAll(".reveal").forEach(el => {
-                if(el.getBoundingClientRect().top < window.innerHeight - 50) el.classList.add("active");
+            document.querySelectorAll(".reveal").forEach((el, index) => {
+                if (el.getBoundingClientRect().top < window.innerHeight - 80) {
+                    setTimeout(() => { el.classList.add("active"); }, index * 80);
+                }
             });
         }
         window.addEventListener("scroll", reveal);
+        setTimeout(reveal, 1500);
     </script>
 </body>
 </html>
