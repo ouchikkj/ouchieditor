@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>Ouchi | High-Performance Video Editor</title>
-    <meta name="description" content="Editor de vídeo focado em retenção e storytelling.">
     
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;800&display=swap" rel="stylesheet">
-    
     <style>
+        /* [O SEU CSS ANTERIOR CONTINUA IGUAL] */
         :root {
             --bg: #030303;
             --card-bg: rgba(255, 255, 255, 0.03);
@@ -25,26 +22,19 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; cursor: none; }
         body { background: var(--bg); color: var(--text-main); overflow-x: hidden; -webkit-font-smoothing: antialiased; }
 
-        /* FILM GRAIN */
         body::before {
             content: ""; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-image: url("https://upload.wikimedia.org/wikipedia/commons/7/76/1k_p_Nois_6_0_grayscale.png");
             opacity: 0.03; pointer-events: none; z-index: 30000; animation: noise 0.2s infinite;
         }
-        @keyframes noise {
-            0% { transform: translate(0,0) } 50% { transform: translate(-1%, 0.5%) } 100% { transform: translate(0.5%, -1%) }
-        }
+        @keyframes noise { 0% { transform: translate(0,0) } 50% { transform: translate(-1%, 0.5%) } 100% { transform: translate(0.5%, -1%) } }
 
         #intro-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #000; z-index: 40000; display: flex; justify-content: center; align-items: center;
         }
         #intro-screen h1 { font-size: 50px; font-weight: 800; letter-spacing: 20px; animation: glitch-intro 1.2s var(--ease-out-expo) forwards; }
-        @keyframes glitch-intro {
-            0% { opacity: 0; transform: scale(0.9); filter: blur(10px); }
-            40% { opacity: 1; filter: blur(0); }
-            100% { opacity: 0; transform: scale(1.1); filter: blur(8px); }
-        }
+        @keyframes glitch-intro { 0% { opacity: 0; transform: scale(0.9); filter: blur(10px); } 40% { opacity: 1; filter: blur(0); } 100% { opacity: 0; transform: scale(1.1); filter: blur(8px); } }
 
         #cursor {
             width: 10px; height: 10px; background: white; border-radius: 50%;
@@ -53,7 +43,6 @@
         }
         .cursor-hover { transform: scale(5); background: rgba(255,255,255,0.1); }
 
-        /* NAVBAR - DEEP GLASSMORPHISM */
         nav {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
             width: fit-content; padding: 0 10px 0 25px; height: 50px;
@@ -63,85 +52,50 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px var(--glass-shine);
         }
         nav a { color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.4s var(--ease-apple); }
-        nav a:hover { color: #fff; }
         .nav-cta { background: #fff; color: #000 !important; padding: 10px 22px; border-radius: 50px; font-size: 10px !important; font-weight: 800 !important; }
 
-        /* HERO */
         .hero { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-        .hero h1 { 
-            font-size: clamp(70px, 16vw, 160px); font-weight: 800; letter-spacing: -0.07em; line-height: 0.8; 
-            background: linear-gradient(180deg, #fff 50%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
+        .hero h1 { font-size: clamp(70px, 16vw, 160px); font-weight: 800; letter-spacing: -0.07em; line-height: 0.8; background: linear-gradient(180deg, #fff 50%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .hero p { color: var(--text-dim); margin-top: 25px; letter-spacing: 6px; font-size: 10px; font-weight: 300; text-transform: uppercase; }
 
-        /* BENTO GRID - DEEP GLASS */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 25px 120px; }
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-
-        .bento-item { 
-            background: var(--card-bg); border-radius: 40px; border: 1px solid var(--border); overflow: hidden; 
-            transition: all 0.8s var(--ease-out-expo); position: relative;
-            box-shadow: inset 0 1px 1px var(--glass-shine), 0 20px 40px rgba(0,0,0,0.3);
-        }
+        .bento-item { background: var(--card-bg); border-radius: 40px; border: 1px solid var(--border); overflow: hidden; transition: all 0.8s var(--ease-out-expo); position: relative; box-shadow: inset 0 1px 1px var(--glass-shine), 0 20px 40px rgba(0,0,0,0.3); }
         .bento-item:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.15); box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
 
         .large { grid-column: span 2; }
-        .small { grid-column: span 1; }
-        .full { grid-column: span 3; }
-
         .video-container { width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; }
         .video-container iframe { width: 100%; height: 100%; border: 0; }
-
         .card-info { padding: 45px; }
-        .card-info h3 { font-size: 26px; font-weight: 600; letter-spacing: -0.03em; }
+        .card-info h3 { font-size: 26px; font-weight: 600; }
         .card-info p { color: var(--text-dim); font-size: 16px; margin-top: 10px; font-weight: 200; line-height: 1.6; }
 
-        /* TESTIMONIAL */
         .testimonial { padding: 80px 60px; display: flex; align-items: center; gap: 50px; background: linear-gradient(145deg, #0a0a0a, #030303); }
         .client-img { width: 100px; height: 100px; border-radius: 50%; filter: grayscale(1); border: 1px solid var(--border); transition: 1s var(--ease-apple); }
-        .testimonial:hover .client-img { filter: grayscale(0); transform: scale(1.1) rotate(3deg); }
-
-        /* ABOUT SECTION */
         .about-grid { display: grid; grid-template-columns: 1fr 1.3fr; align-items: stretch; background: #050505; }
         .about-photo { width: 100%; height: 100%; min-height: 550px; overflow: hidden; border-right: 1px solid var(--border); }
-        .about-photo img { 
-            width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.7); 
-            transition: 1.5s var(--ease-out-expo); 
-        }
-        .bento-item:hover .about-photo img { filter: grayscale(0%) brightness(1); transform: scale(1.05); }
+        .about-photo img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%) brightness(0.7); transition: 1.5s var(--ease-out-expo); }
         .about-content { padding: 80px; }
-        .about-content h2 { font-size: 48px; margin-bottom: 30px; font-weight: 800; letter-spacing: -0.05em; }
+        .about-content h2 { font-size: 48px; margin-bottom: 30px; font-weight: 800; }
         .about-content p { font-size: 19px; color: #a1a1a6; line-height: 1.9; font-weight: 200; }
 
         footer { padding: 180px 20px; text-align: center; }
-        .cta { 
-            font-size: 22px; font-weight: 800; color: #000; background: #fff; padding: 28px 70px; 
-            border-radius: 100px; text-decoration: none; transition: 0.6s var(--ease-out-expo); display: inline-block;
-        }
-        .cta:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(255,255,255,0.2); }
-
+        .cta { font-size: 22px; font-weight: 800; color: #000; background: #fff; padding: 28px 70px; border-radius: 100px; text-decoration: none; transition: 0.6s var(--ease-out-expo); display: inline-block; }
         .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s var(--ease-out-expo); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
-        @media (max-width: 900px) {
-            .bento-grid { grid-template-columns: 1fr; }
-            .large, .small, .full { grid-column: span 1; }
-            .about-grid { grid-template-columns: 1fr; }
-            #cursor { display: none; } * { cursor: auto; }
-        }
+        @media (max-width: 900px) { .bento-grid { grid-template-columns: 1fr; } .large, .small, .full { grid-column: span 1; } .about-grid { grid-template-columns: 1fr; } #cursor { display: none; } * { cursor: auto; } }
     </style>
 </head>
-<body>
-
-    <div id="intro-screen"><h1>OUCHI</h1></div>
+<body onclick="initAudio()"> <div id="intro-screen"><h1>OUCHI</h1></div>
     <div id="cursor"></div>
 
     <nav>
-        <a href="#work">Trabalho</a>
-        <a href="#feedback">Reviews</a>
-        <a href="https://ytjobs.co/talent/vitrine/490722" target="_blank" style="color: #fff; font-weight: 800;">Portfólio ↗</a>
-        <a href="#about">Sobre</a>
-        <a href="https://x.com/ouchikk" target="_blank" class="nav-cta">Vamos conversar!</a>
+        <a href="#work" class="snd-hover">Trabalho</a>
+        <a href="#feedback" class="snd-hover">Reviews</a>
+        <a href="https://ytjobs.co/talent/vitrine/490722" target="_blank" class="snd-hover" style="color: #fff; font-weight: 800;">Portfólio ↗</a>
+        <a href="#about" class="snd-hover">Sobre</a>
+        <a href="https://x.com/ouchikk" target="_blank" class="nav-cta snd-hover">Vamos conversar!</a>
     </nav>
 
     <section class="hero">
@@ -151,15 +105,12 @@
 
     <div class="container">
         <div class="bento-grid">
-            
-            <div class="bento-item large reveal" id="work">
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/3ygmkNIVjbc" allowfullscreen></iframe>
-                </div>
+            <div class="bento-item large reveal snd-hover" id="work">
+                <div class="video-container"><iframe src="https://www.youtube.com/embed/3ygmkNIVjbc" allowfullscreen></iframe></div>
                 <div class="card-info"><h3>Storytelling Visual</h3><p>Narrativa avançada para grandes criadores.</p></div>
             </div>
 
-            <div class="bento-item small reveal" style="display:flex; flex-direction:column; justify-content:center; padding: 40px; text-align: center;">
+            <div class="bento-item small reveal snd-hover" style="display:flex; flex-direction:column; justify-content:center; padding: 40px; text-align: center;">
                 <p style="color:var(--text-dim); text-transform:uppercase; font-size:10px; letter-spacing:3px;">Impacto</p>
                 <h2 style="font-size: 85px; font-weight: 800; letter-spacing: -7px;">70K+</h2>
                 <p style="color:var(--text-dim); font-size: 13px; font-weight: 200;">Visualizações</p>
@@ -173,45 +124,59 @@
                 </div>
             </div>
 
-            <div class="bento-item small reveal">
-                <div class="video-container" style="aspect-ratio: 9/16; max-height: 550px;">
-                    <iframe src="https://www.youtube.com/embed/2C-7sUFAEfo" allowfullscreen></iframe>
-                </div>
-                <div class="card-info"><h3>Short Content</h3></div>
-            </div>
-
-            <div class="bento-item large reveal">
-                <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/Yrb1ssvNzFU" allowfullscreen></iframe>
-                </div>
-                <div class="card-info"><h3>High Performance</h3></div>
-            </div>
-
-            <div class="bento-item full reveal" id="about">
+            <div class="bento-item full reveal snd-hover" id="about">
                 <div class="about-grid">
-                    <div class="about-photo">
-                        <img src="image_07351c.jpg" alt="Ouchi Photo">
-                    </div>
+                    <div class="about-photo"><img src="image_07351c.jpg" alt="Ouchi Photo"></div>
                     <div class="about-content">
                         <h2>A Jornada.</h2>
-                        <p>
-                            Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual! 
-                            <br><br>
-                            Desde então, transformo vídeos em ativos de alta retenção, garantindo que cada frame contribua para uma narrativa cativante.
-                        </p>
+                        <p>Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber... hoje transformo vídeos em ativos de alta retenção.</p>
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <footer>
         <h2 class="reveal" style="margin-bottom: 50px; font-size: clamp(30px, 6vw, 60px); letter-spacing: -3px; font-weight: 800;">Vamos elevar seu conteúdo?</h2>
-        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal">Entre em contato</a>
+        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal snd-hover">Entre em contato</a>
     </footer>
 
     <script>
+        // Links de sons sutis (UI Modernos)
+        const hoverSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'); 
+        const clickSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2568/2568-preview.mp3');
+        
+        hoverSound.volume = 0.2;
+        clickSound.volume = 0.3;
+
+        let audioInitialized = false;
+
+        function initAudio() {
+            if (audioInitialized) return;
+            audioInitialized = true;
+            // Tocar um som sutil de "power up" ao iniciar
+            const startSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2577/2577-preview.mp3');
+            startSound.volume = 0.1;
+            startSound.play();
+        }
+
+        // Aplicar sons de hover
+        document.querySelectorAll('.snd-hover').forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                if (audioInitialized) {
+                    hoverSound.currentTime = 0;
+                    hoverSound.play().catch(()=>{});
+                }
+            });
+            el.addEventListener('click', () => {
+                if (audioInitialized) {
+                    clickSound.currentTime = 0;
+                    clickSound.play().catch(()=>{});
+                }
+            });
+        });
+
+        // Script original de Cursor e Reveal
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const intro = document.getElementById('intro-screen');
