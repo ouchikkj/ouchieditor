@@ -67,22 +67,12 @@
         .nav-cta { background: #fff; color: #000 !important; padding: 10px 22px; border-radius: 50px; font-size: 10px !important; font-weight: 800 !important; }
 
         /* HERO */
-        .hero { height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+        .hero { height: 90vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
         .hero h1 { 
             font-size: clamp(70px, 16vw, 160px); font-weight: 800; letter-spacing: -0.07em; line-height: 0.8; 
             background: linear-gradient(180deg, #fff 50%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
         }
         .hero p { color: var(--text-dim); margin-top: 25px; letter-spacing: 6px; font-size: 10px; font-weight: 300; text-transform: uppercase; }
-
-        /* TRUST BAR (SEÇÃO DE CLIENTES) */
-        .trust-bar {
-            max-width: 1200px; margin: -50px auto 100px; padding: 0 25px;
-            display: flex; justify-content: center; align-items: center; gap: 60px;
-            opacity: 0.5; filter: grayscale(1); transition: 0.8s var(--ease-apple);
-        }
-        .trust-bar:hover { opacity: 1; filter: grayscale(0); }
-        .trust-bar img { height: 30px; opacity: 0.6; transition: 0.4s; }
-        .trust-bar img:hover { opacity: 1; transform: scale(1.1); }
 
         /* BENTO GRID - DEEP GLASS */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 25px 120px; }
@@ -137,7 +127,6 @@
             .bento-grid { grid-template-columns: 1fr; }
             .large, .small, .full { grid-column: span 1; }
             .about-grid { grid-template-columns: 1fr; }
-            .trust-bar { flex-wrap: wrap; gap: 30px; }
             #cursor { display: none; } * { cursor: auto; }
         }
     </style>
@@ -159,13 +148,6 @@
         <h1 class="reveal">Ouchi.</h1>
         <p class="reveal">High-Performance Video Editor</p>
     </section>
-
-    <div class="trust-bar reveal">
-        <span style="font-size: 10px; letter-spacing: 2px; color: #555;">TRUSTED BY</span>
-        <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/YouTube_Logo_2017.svg" alt="Client 1">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Discord_color_logo.svg" alt="Client 2">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Client 3">
-    </div>
 
     <div class="container">
         <div class="bento-grid">
