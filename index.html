@@ -23,14 +23,15 @@
 
         #bg-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
-        /* CURSOR DEFINITIVO */
+        /* CURSOR */
         #cursor { 
             width: 10px; height: 10px; background: white; border-radius: 50%; 
             position: fixed; pointer-events: none; z-index: 50000; 
             mix-blend-mode: difference; transition: width 0.3s var(--ease-apple), height 0.3s var(--ease-apple), opacity 0.3s; 
+            transform: translate(-50%, -50%); /* Centraliza a bolinha no mouse */
         }
-        .cursor-hover { transform: scale(5.5); background: rgba(255,255,255,0.15); }
-        .cursor-video { transform: scale(3.5); background: white; mix-blend-mode: normal !important; }
+        .cursor-hover { width: 50px !important; height: 50px !important; background: rgba(255,255,255,0.15) !important; }
+        .cursor-video { width: 35px !important; height: 35px !important; background: white !important; mix-blend-mode: normal !important; }
 
         /* FILM GRAIN */
         body::before {
@@ -40,8 +41,8 @@
         }
         @keyframes noise { 0% { transform: translate(0,0) } 50% { transform: translate(-1%, 0.5%) } 100% { transform: translate(0.5%, -1%) } }
 
-        /* INTRO */
-        #intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 40000; display: flex; justify-content: center; align-items: center; }
+        /* INTRO SCREEN */
+        #intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 40000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
         #intro-screen h1 { font-size: 50px; font-weight: 800; letter-spacing: 20px; animation: glitch-intro 1.2s var(--ease-out-expo) forwards; }
         @keyframes glitch-intro { 0% { opacity: 0; transform: scale(0.9); filter: blur(10px); } 40% { opacity: 1; filter: blur(0); } 100% { opacity: 0; transform: scale(1.1); filter: blur(8px); } }
 
@@ -55,8 +56,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px var(--glass-shine);
             overflow-x: auto; white-space: nowrap; scrollbar-width: none;
         }
-        nav::-webkit-scrollbar { display: none; }
-        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); margin-right: 10px; flex-shrink: 0; }
+        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); margin-right: 10px; }
         .status-dot { width: 6px; height: 6px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         nav a { color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.4s var(--ease-apple); }
@@ -78,12 +78,11 @@
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
         .bento-item { background: var(--card-bg); border-radius: 40px; border: 1px solid var(--border); overflow: hidden; transition: all 0.8s var(--ease-out-expo); position: relative; backdrop-filter: blur(10px); }
         .bento-item:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.15); }
-
         .large { grid-column: span 2; } .small { grid-column: span 1; } .full { grid-column: span 3; }
 
-        /* VIDEO FIX DEFINITIVO */
-        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; position: relative; }
-        .video-container iframe { width: 100%; height: 100%; border: 0; position: relative; }
+        /* VIDEO */
+        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; overflow: hidden; }
+        .video-container iframe { width: 100%; height: 100%; border: 0; }
 
         .card-info { padding: 45px; }
         .card-info h3 { font-size: 26px; font-weight: 600; }
@@ -93,7 +92,6 @@
         .testimonial { padding: 80px 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 30px; background: linear-gradient(145deg, #0a0a0a, #030303); }
         .client-img { width: 100px; height: 100px; border-radius: 50%; filter: grayscale(1); border: 1px solid var(--border); transition: 1s var(--ease-apple); }
         .testimonial:hover .client-img { filter: grayscale(0); transform: scale(1.1); }
-        .testimonial p { font-size: 22px; font-weight: 200; color: #eee; line-height: 1.6; max-width: 800px; }
 
         /* JORNADA */
         .about-grid { display: grid; grid-template-columns: 1fr 1.3fr; align-items: stretch; background: #050505; }
@@ -106,6 +104,7 @@
         footer { padding: 180px 20px; text-align: center; }
         .cta { font-size: 22px; font-weight: 800; color: #000; background: #fff; padding: 28px 70px; border-radius: 100px; text-decoration: none; display: inline-block; }
         
+        /* REVEAL SYSTEM */
         .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s var(--ease-out-expo); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
@@ -113,10 +112,7 @@
             .bento-grid { grid-template-columns: 1fr; }
             .large, .small, .full { grid-column: span 1; }
             .about-grid { grid-template-columns: 1fr; }
-            .about-photo { min-height: 300px; }
             #cursor { display: none; }
-            nav { justify-content: flex-start; }
-            .status-badge { display: none; }
         }
     </style>
 </head>
@@ -146,7 +142,6 @@
 
     <div class="container">
         <div class="bento-grid">
-            
             <div class="bento-item large reveal snd-hover" id="work">
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/3ygmkNIVjbc" allowfullscreen></iframe>
@@ -198,6 +193,22 @@
     </footer>
 
     <script>
+        // REVEAL ANIMATION FUNCTION
+        function reveal() {
+            const reveals = document.querySelectorAll(".reveal");
+            reveals.forEach((el, i) => {
+                const windowHeight = window.innerHeight;
+                const elementTop = el.getBoundingClientRect().top;
+                const elementVisible = 80;
+                if (elementTop < windowHeight - elementVisible) {
+                    setTimeout(() => {
+                        el.classList.add("active");
+                    }, i * 70);
+                }
+            });
+        }
+        window.addEventListener("scroll", reveal);
+
         // CANVAS BACKGROUND
         const canvas = document.getElementById('bg-canvas');
         const ctx = canvas.getContext('2d');
@@ -230,36 +241,45 @@
         window.addEventListener('resize', initCanvas);
         initCanvas(); draw();
 
-        // CURSOR LOGIC - TOTAL FIX
+        // CURSOR LOGIC
         const cursor = document.getElementById('cursor');
         let mouseX = 0, mouseY = 0;
-
         document.addEventListener('mousemove', e => {
-            mouseX = e.clientX;
-            mouseY = e.clientY;
+            mouseX = e.clientX; mouseY = e.clientY;
             cursor.style.left = mouseX + 'px';
             cursor.style.top = mouseY + 'px';
         });
 
-        // Detectar entrada em iframes para mudar o estilo sem "travar"
-        const iframes = document.querySelectorAll('iframe');
         setInterval(() => {
             const hovered = document.elementFromPoint(mouseX, mouseY);
-            if (hovered && hovered.tagName === 'IFRAME') {
+            if (hovered && (hovered.tagName === 'IFRAME' || hovered.closest('.video-container'))) {
                 cursor.classList.add('cursor-video');
             } else {
                 cursor.classList.remove('cursor-video');
             }
         }, 100);
 
-        // SCROLL INDICATOR
+        // INTRO & START REVEAL
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const intro = document.getElementById('intro-screen');
+                intro.style.transition = "opacity 0.8s var(--ease-apple)";
+                intro.style.opacity = '0';
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    reveal(); // DISPARA AS ANIMAÇÕES LOGO APÓS A INTRO
+                }, 800);
+            }, 1000); 
+        });
+
+        // SCROLL INDICATOR FADE
         window.addEventListener('scroll', () => {
             const indicator = document.querySelector('.scroll-indicator');
             if (window.scrollY > 50) indicator.style.opacity = '0';
             else indicator.style.opacity = '0.6';
-            reveal();
         });
 
+        // SOUNDS & HOVERS
         const hoverSound = new Audio('https://assets.mixkit.co/active_storage/sfx/2571/2571-preview.mp3'); 
         hoverSound.volume = 0.15;
         let audioInit = false;
@@ -267,7 +287,6 @@
             if (audioInit) return; audioInit = true;
             new Audio('https://assets.mixkit.co/active_storage/sfx/2577/2577-preview.mp3').play().catch(()=>{});
         }
-
         document.querySelectorAll('.snd-hover').forEach(el => {
             el.addEventListener('mouseenter', () => { 
                 if (audioInit) { hoverSound.currentTime = 0; hoverSound.play().catch(()=>{}); } 
@@ -275,22 +294,6 @@
             });
             el.addEventListener('mouseleave', () => cursor.classList.remove('cursor-hover'));
         });
-
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('intro-screen').style.opacity = '0';
-                setTimeout(() => document.getElementById('intro-screen').style.display = 'none', 800);
-            }, 1000); 
-            reveal();
-        });
-
-        function reveal() {
-            document.querySelectorAll(".reveal").forEach((el, i) => {
-                if (el.getBoundingClientRect().top < window.innerHeight - 80) {
-                    setTimeout(() => el.classList.add("active"), i * 80);
-                }
-            });
-        }
 
         let docTitle = document.title;
         window.addEventListener("blur", () => { document.title = "Volte aqui... 🎬"; });
