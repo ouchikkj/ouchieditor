@@ -28,7 +28,7 @@
             width: 10px; height: 10px; background: white; border-radius: 50%; 
             position: fixed; pointer-events: none; z-index: 50000; 
             mix-blend-mode: difference; transition: width 0.3s var(--ease-apple), height 0.3s var(--ease-apple), opacity 0.3s; 
-            transform: translate(-50%, -50%); /* Centraliza a bolinha no mouse */
+            transform: translate(-50%, -50%);
         }
         .cursor-hover { width: 50px !important; height: 50px !important; background: rgba(255,255,255,0.15) !important; }
         .cursor-video { width: 35px !important; height: 35px !important; background: white !important; mix-blend-mode: normal !important; }
@@ -43,7 +43,7 @@
 
         /* INTRO SCREEN */
         #intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 40000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
-        #intro-screen h1 { font-size: 50px; font-weight: 800; letter-spacing: 20px; animation: glitch-intro 1.2s var(--ease-out-expo) forwards; }
+        #intro-screen h1 { font-size: 50px; font-weight: 800; letter-spacing: 20px; animation: glitch-intro 1s var(--ease-out-expo) forwards; }
         @keyframes glitch-intro { 0% { opacity: 0; transform: scale(0.9); filter: blur(10px); } 40% { opacity: 1; filter: blur(0); } 100% { opacity: 0; transform: scale(1.1); filter: blur(8px); } }
 
         /* NAV */
@@ -76,7 +76,7 @@
         /* BENTO GRID */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 25px 120px; }
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        .bento-item { background: var(--card-bg); border-radius: 40px; border: 1px solid var(--border); overflow: hidden; transition: all 0.8s var(--ease-out-expo); position: relative; backdrop-filter: blur(10px); }
+        .bento-item { background: var(--card-bg); border-radius: 40px; border: 1px solid var(--border); overflow: hidden; transition: all 0.6s var(--ease-out-expo); position: relative; backdrop-filter: blur(10px); }
         .bento-item:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.15); }
         .large { grid-column: span 2; } .small { grid-column: span 1; } .full { grid-column: span 3; }
 
@@ -104,8 +104,8 @@
         footer { padding: 180px 20px; text-align: center; }
         .cta { font-size: 22px; font-weight: 800; color: #000; background: #fff; padding: 28px 70px; border-radius: 100px; text-decoration: none; display: inline-block; }
         
-        /* REVEAL SYSTEM */
-        .reveal { opacity: 0; transform: translateY(50px); transition: all 1.2s var(--ease-out-expo); }
+        /* FAST REVEAL SYSTEM */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s var(--ease-out-expo); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         @media (max-width: 900px) {
@@ -193,17 +193,16 @@
     </footer>
 
     <script>
-        // REVEAL ANIMATION FUNCTION
+        // FAST REVEAL ANIMATION
         function reveal() {
             const reveals = document.querySelectorAll(".reveal");
             reveals.forEach((el, i) => {
                 const windowHeight = window.innerHeight;
                 const elementTop = el.getBoundingClientRect().top;
-                const elementVisible = 80;
-                if (elementTop < windowHeight - elementVisible) {
+                if (elementTop < windowHeight - 50) {
                     setTimeout(() => {
                         el.classList.add("active");
-                    }, i * 70);
+                    }, i * 40); // Intervalo reduzido (mais rápido)
                 }
             });
         }
@@ -259,17 +258,20 @@
             }
         }, 100);
 
-        // INTRO & START REVEAL
+        // INTRO & INSTANT START
         window.addEventListener('load', () => {
             setTimeout(() => {
                 const intro = document.getElementById('intro-screen');
-                intro.style.transition = "opacity 0.8s var(--ease-apple)";
+                intro.style.transition = "opacity 0.6s var(--ease-apple)";
                 intro.style.opacity = '0';
+                
+                // Dispara a revelação logo no início do fade-out da intro
+                reveal(); 
+                
                 setTimeout(() => {
                     intro.style.display = 'none';
-                    reveal(); // DISPARA AS ANIMAÇÕES LOGO APÓS A INTRO
-                }, 800);
-            }, 1000); 
+                }, 600);
+            }, 800); 
         });
 
         // SCROLL INDICATOR FADE
