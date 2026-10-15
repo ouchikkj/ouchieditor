@@ -68,18 +68,27 @@
         /* NAV */
         nav {
             position: fixed; top: 30px; left: 50%; transform: translateX(-50%);
-            width: fit-content; max-width: 95%; padding: 0 10px 0 25px; height: 50px;
+            width: fit-content; max-width: 95%; padding: 0 10px 0 20px; height: 50px;
             background: rgba(15, 15, 15, 0.4); backdrop-filter: blur(30px) saturate(180%);
             border: 1px solid var(--border); border-radius: 100px;
-            z-index: 10000; display: flex; gap: 24px; align-items: center;
+            z-index: 10000; display: flex; gap: 20px; align-items: center;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px var(--glass-shine);
             overflow-x: auto; white-space: nowrap; scrollbar-width: none;
         }
-        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); margin-right: 10px; }
+        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); margin-right: 5px; }
         .status-dot { width: 6px; height: 6px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         nav a { color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.4s var(--ease-apple); }
         .nav-cta { background: #fff; color: #000 !important; padding: 10px 22px; border-radius: 50px; font-weight: 800 !important; }
+
+        /* LANGUAGE SELECTOR */
+        .lang-switch { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 4px 8px; border-radius: 20px; border: 1px solid var(--border); margin-left: 5px; }
+        .flag-btn {
+            background: none; border: none; padding: 2px; display: flex; align-items: center; justify-content: center;
+            opacity: 0.4; transition: opacity 0.3s, transform 0.3s; width: 22px; height: 16px; border-radius: 3px; overflow: hidden;
+        }
+        .flag-btn.active, .flag-btn:hover { opacity: 1; transform: scale(1.15); }
+        .flag-btn svg { width: 100%; height: 100%; object-fit: cover; }
 
         /* HERO */
         .hero { height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; }
@@ -142,12 +151,31 @@
     <div id="cursor"></div>
 
     <nav>
-        <div class="status-badge"><span class="status-dot"></span><span class="status-text">Available</span></div>
-        <a href="#work" class="snd-hover">Trabalho</a>
-        <a href="#feedback" class="snd-hover">Reviews</a>
-        <a href="https://ytjobs.co/talent/vitrine/490722" target="_blank" class="snd-hover" style="color: #fff; font-weight: 800;">Portfólio ↗</a>
-        <a href="#about" class="snd-hover">Sobre</a>
-        <a href="https://x.com/ouchikk" target="_blank" class="nav-cta snd-hover">Contato</a>
+        <div class="status-badge"><span class="status-dot"></span><span class="status-text" data-i18n="nav-status">Disponível</span></div>
+        <a href="#work" class="snd-hover" data-i18n="nav-work">Trabalho</a>
+        <a href="#feedback" class="snd-hover" data-i18n="nav-reviews">Reviews</a>
+        <a href="https://ytjobs.co/talent/vitrine/490722" target="_blank" class="snd-hover" style="color: #fff; font-weight: 800;" data-i18n="nav-portfolio">Portfólio ↗</a>
+        <a href="#about" class="snd-hover" data-i18n="nav-about">Sobre</a>
+        <a href="https://x.com/ouchikk" target="_blank" class="nav-cta snd-hover" data-i18n="nav-contact">Contato</a>
+        
+        <!-- BANDERA / SELETOR DE IDIOMA -->
+        <div class="lang-switch">
+            <button class="flag-btn snd-hover active" id="btn-pt" title="Português">
+                <svg viewBox="0 0 720 504" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="720" height="504" fill="#009b3a"/>
+                    <path d="M360 50.4L648 252 360 453.6 72 252z" fill="#fedf00"/>
+                    <circle cx="360" cy="252" r="126" fill="#002776"/>
+                    <path d="M234 252a126 126 0 0 0 252 0" fill="none" stroke="#fff" stroke-width="12"/>
+                </svg>
+            </button>
+            <button class="flag-btn snd-hover" id="btn-en" title="English">
+                <svg viewBox="0 0 640 480" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="640" height="480" fill="#bd3d44"/>
+                    <path stroke="#fff" stroke-width="37" d="M0 55.3h640M0 129h640M0 203h640M0 277h640M0 351h640M0 425h640"/>
+                    <rect width="256" height="258" fill="#192f5d"/>
+                </svg>
+            </button>
+        </div>
     </nav>
 
     <section class="hero">
@@ -165,18 +193,18 @@
                 <div class="video-container">
                     <iframe src="https://www.youtube.com/embed/3ygmkNIVjbc" allowfullscreen></iframe>
                 </div>
-                <div class="card-info"><h3>Storytelling Visual</h3><p>Narrativa avançada para grandes criadores.</p></div>
+                <div class="card-info"><h3 data-i18n="card1-title">Storytelling Visual</h3><p data-i18n="card1-desc">Narrativa avançada para grandes criadores.</p></div>
             </div>
 
             <div class="bento-item small reveal snd-hover" style="display:flex; flex-direction:column; justify-content:center; padding: 40px; text-align: center;">
-                <p style="color:var(--text-dim); text-transform:uppercase; font-size:10px; letter-spacing:3px;">Impacto</p>
+                <p style="color:var(--text-dim); text-transform:uppercase; font-size:10px; letter-spacing:3px;" data-i18n="impact-label">Impacto</p>
                 <h2 style="font-size: 85px; font-weight: 800; letter-spacing: -7px;">200K+</h2>
-                <p style="color:var(--text-dim); font-size: 13px; font-weight: 200;">Visualizações</p>
+                <p style="color:var(--text-dim); font-size: 13px; font-weight: 200;" data-i18n="impact-views">Visualizações</p>
             </div>
 
             <div class="bento-item full testimonial reveal" id="feedback">
                 <img src="pinecio.jpg" alt="Pinécio" class="client-img">
-                <p>“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
+                <p data-i18n="testimonial-quote">“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“</p>
                 <p style="font-size:11px; color:var(--text-dim); letter-spacing:2px; font-weight: 600;">PINECIO • YOUTUBER</p>
             </div>
 
@@ -184,22 +212,22 @@
                 <div class="video-container" style="aspect-ratio: 9/16; max-height: 550px;">
                     <iframe src="https://www.youtube.com/embed/2C-7sUFAEfo" allowfullscreen></iframe>
                 </div>
-                <div class="card-info"><h3>Short Content</h3></div>
+                <div class="card-info"><h3 data-i18n="card2-title">Short Content</h3></div>
             </div>
 
             <div class="bento-item large reveal snd-hover">
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/Yrb1ssvNzFU" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/UUzd4-VZiTk" allowfullscreen></iframe>
                 </div>
-                <div class="card-info"><h3>High Performance</h3></div>
+                <div class="card-info"><h3 data-i18n="card3-title">High Performance</h3></div>
             </div>
 
             <div class="bento-item full reveal" id="about">
                 <div class="about-grid">
                     <div class="about-photo"><img src="image_07351c.jpg" alt="Ouchi Photo"></div>
                     <div class="about-content">
-                        <h2>A Jornada.</h2>
-                        <p>Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual!<br><br>Desenvolvendo técnicas avançadas de retenção e storytelling para transformar qualquer projeto em obra de arte.</p>
+                        <h2 data-i18n="about-title">A Jornada.</h2>
+                        <p data-i18n="about-text">Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual!<br><br>Desenvolvendo técnicas avançadas de retenção e storytelling para transformar qualquer projeto em obra de arte.</p>
                     </div>
                 </div>
             </div>
@@ -207,11 +235,79 @@
     </div>
 
     <footer>
-        <h2 class="reveal" style="margin-bottom: 50px; font-size: clamp(30px, 6vw, 60px); letter-spacing: -3px; font-weight: 800;">Vamos elevar seu conteúdo?</h2>
-        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal snd-hover">Entre em contato</a>
+        <h2 class="reveal" style="margin-bottom: 50px; font-size: clamp(30px, 6vw, 60px); letter-spacing: -3px; font-weight: 800;" data-i18n="footer-title">Vamos elevar seu conteúdo?</h2>
+        <a href="https://x.com/ouchikk" target="_blank" class="cta reveal snd-hover" data-i18n="footer-cta">Entre em contato</a>
     </footer>
 
     <script>
+        // TRANSLATIONS SYSTEM (i18n)
+        const translations = {
+            pt: {
+                "nav-status": "Disponível",
+                "nav-work": "Trabalho",
+                "nav-reviews": "Reviews",
+                "nav-portfolio": "Portfólio ↗",
+                "nav-about": "Sobre",
+                "nav-contact": "Contato",
+                "card1-title": "Storytelling Visual",
+                "card1-desc": "Narrativa avançada para grandes criadores.",
+                "impact-label": "Impacto",
+                "impact-views": "Visualizações",
+                "testimonial-quote": "“Trabalho incrível, o cara te atende e está disposto 100% entrega tudo no prazo.. absurdo!“",
+                "card2-title": "Short Content",
+                "card3-title": "High Performance",
+                "about-title": "A Jornada.",
+                "about-text": "Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual!<br><br>Desenvolvendo técnicas avançadas de retenção e storytelling para transformar qualquer projeto em obra de arte.",
+                "footer-title": "Vamos elevar seu conteúdo?",
+                "footer-cta": "Entre em contato",
+                "blur-title": "Volte aqui... 🎬"
+            },
+            en: {
+                "nav-status": "Available",
+                "nav-work": "Work",
+                "nav-reviews": "Reviews",
+                "nav-portfolio": "Portfolio ↗",
+                "nav-about": "About",
+                "nav-contact": "Contact",
+                "card1-title": "Visual Storytelling",
+                "card1-desc": "Advanced narrative for top creators.",
+                "impact-label": "Impact",
+                "impact-views": "Views",
+                "testimonial-quote": "“Incredible work, always available and 100% dedicated to delivering on time.. insane!“",
+                "card2-title": "Short Content",
+                "card3-title": "High Performance",
+                "about-title": "The Journey.",
+                "about-text": "I started editing videos for myself with a dream of becoming a YouTuber like every kid. However, I soon realized my real passion and talent lay in audiovisual production!<br><br>Developing advanced retention and storytelling techniques to turn any project into a masterpiece.",
+                "footer-title": "Ready to elevate your content?",
+                "footer-cta": "Get in touch",
+                "blur-title": "Come back... 🎬"
+            }
+        };
+
+        let currentLang = localStorage.getItem('language') || 'pt';
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            localStorage.setItem('language', lang);
+            document.documentElement.lang = lang === 'pt' ? 'pt-br' : 'en';
+
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[lang][key]) {
+                    el.innerHTML = translations[lang][key];
+                }
+            });
+
+            document.getElementById('btn-pt').classList.toggle('active', lang === 'pt');
+            document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+        }
+
+        document.getElementById('btn-pt').addEventListener('click', () => setLanguage('pt'));
+        document.getElementById('btn-en').addEventListener('click', () => setLanguage('en'));
+
+        // Initialize saved language on load
+        setLanguage(currentLang);
+
         // FAST REVEAL ANIMATION
         function reveal() {
             const reveals = document.querySelectorAll(".reveal");
@@ -311,7 +407,6 @@
             new Audio('https://assets.mixkit.co/active_storage/sfx/2577/2577-preview.mp3').play().catch(()=>{});
         }
 
-        // Ativa o áudio no primeiro clique na página de forma segura
         document.addEventListener('click', initAudio, { once: true });
 
         document.querySelectorAll('.snd-hover').forEach(el => {
@@ -323,7 +418,7 @@
         });
 
         let docTitle = document.title;
-        window.addEventListener("blur", () => { document.title = "Volte aqui... 🎬"; });
+        window.addEventListener("blur", () => { document.title = translations[currentLang]["blur-title"]; });
         window.addEventListener("focus", () => { document.title = docTitle; });
     </script>
 </body>
