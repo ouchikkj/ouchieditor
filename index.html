@@ -60,7 +60,7 @@
         @keyframes noise { 0% { transform: translate(0,0) } 50% { transform: translate(-1%, 0.5%) } 100% { transform: translate(0.5%, -1%) } }
 
         /* INTRO SCREEN */
-        #intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 40000; display: flex; justify-content: center; align-items: center; pointer-events: none; }
+        #intro-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 40000; display: flex; justify-content: center; align-items: center; pointer-events: none[...]
         #intro-screen h1 { font-size: 50px; font-weight: 800; letter-spacing: 20px; animation: glitch-intro 1s var(--ease-out-expo) forwards; }
         @keyframes glitch-intro { 0% { opacity: 0; transform: scale(0.9); filter: blur(10px); } 40% { opacity: 1; filter: blur(0); } 100% { opacity: 0; transform: scale(1.1); filter: blur(8px); } }
 
@@ -74,7 +74,7 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 1px 1px var(--glass-shine);
             overflow-x: auto; white-space: nowrap; scrollbar-width: none;
         }
-        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); margin-right: 10px; }
+        .status-badge { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 20px; border: 1px solid var(--border); margin-right: 10p[...]
         .status-dot { width: 6px; height: 6px; background: #00ff88; border-radius: 50%; box-shadow: 0 0 10px #00ff88; animation: pulse 2s infinite; }
         @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
         nav a { color: var(--text-dim); text-decoration: none; font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: 1.5px; transition: 0.4s var(--ease-apple); }
@@ -82,11 +82,11 @@
 
         /* HERO */
         .hero { height: 85vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; }
-        .hero h1 { font-size: clamp(70px, 16vw, 160px); font-weight: 800; letter-spacing: -0.07em; line-height: 0.8; background: linear-gradient(180deg, #fff 50%, #444 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero h1 { font-size: clamp(70px, 16vw, 160px); font-weight: 800; letter-spacing: -0.07em; line-height: 0.8; background: linear-gradient(180deg, #fff 50%, #444 100%); -webkit-background-cl[...]
         .hero p { color: var(--text-dim); margin-top: 25px; letter-spacing: 6px; font-size: 10px; text-transform: uppercase; }
 
         /* SCROLL INDICATOR */
-        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 12px; opacity: 0.6; transition: 0.5s; }
+        .scroll-indicator { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 12px; opacity: 0.6; transitio[...]
         .scroll-line { width: 1px; height: 50px; background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,1), rgba(255,255,255,0)); position: relative; overflow: hidden; }
         .scroll-line::after { content: ""; position: absolute; top: -100%; left: 0; width: 100%; height: 100%; background: white; animation: scroll-anim 2s infinite; }
         @keyframes scroll-anim { 0% { top: -100%; } 100% { top: 100%; } }
@@ -94,7 +94,7 @@
         /* BENTO GRID */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 25px 120px; }
         .bento-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
-        .bento-item { background: var(--card-bg); border-radius: 40px; border: 1px solid var(--border); overflow: hidden; transition: all 0.6s var(--ease-out-expo); position: relative; backdrop-filter: blur(10px); }
+        .bento-item { background: var(--card-bg); border-radius: 40px; border: 1px solid var(--border); overflow: hidden; transition: all 0.6s var(--ease-out-expo); position: relative; backdrop-fi[...]
         .bento-item:hover { transform: translateY(-10px); border-color: rgba(255,255,255,0.15); }
         .large { grid-column: span 2; } .small { grid-column: span 1; } .full { grid-column: span 3; }
 
@@ -107,7 +107,7 @@
         .card-info p { color: var(--text-dim); font-size: 16px; margin-top: 10px; font-weight: 200; line-height: 1.6; }
 
         /* TESTIMONIAL */
-        .testimonial { padding: 80px 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 30px; background: linear-gradient(145deg, #0a0a0a, #030303); }
+        .testimonial { padding: 80px 60px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; gap: 30px; background: linear-gradient(145deg, [...]
         .client-img { width: 100px; height: 100px; border-radius: 50%; filter: grayscale(1); border: 1px solid var(--border); transition: 1s var(--ease-apple); }
         .testimonial:hover .client-img { filter: grayscale(0); transform: scale(1.1); }
 
@@ -188,7 +188,7 @@
 
             <div class="bento-item large reveal snd-hover">
                 <div class="video-container">
-                    <iframe src="https://www.youtube.com/embed/Yrb1ssvNzFU" allowfullscreen></iframe>
+                    <iframe src="https://www.youtube.com/embed/UUzd4-VZiTk?start=35" allowfullscreen></iframe>
                 </div>
                 <div class="card-info"><h3>High Performance</h3></div>
             </div>
@@ -198,7 +198,7 @@
                     <div class="about-photo"><img src="image_07351c.jpg" alt="Ouchi Photo"></div>
                     <div class="about-content">
                         <h2>A Jornada.</h2>
-                        <p>Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual!<br><br>Desde então, transformo vídeos em ativos de alta retenção.</p>
+                        <p>Comecei a editar vídeos pra mim, tinha o sonho de ser Youtuber assim como toda criança, porém, percebi que minha paixão e talento estavam no audiovisual!<br><br>Des[...]
                     </div>
                 </div>
             </div>
